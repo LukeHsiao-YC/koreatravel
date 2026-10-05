@@ -23,6 +23,7 @@
   --river:#A9C6CB;
   --grid:#E2E7E0;
   --halo:#F6F7F1;
+  --park:#2B6CB0;--on-accent:#1A1405;
   --d1:#B5452B; --d2:#B98614; --d3:#2F7F86; --d4:#3F7D4F; --d5:#7E4C86; --d6:#3E5196; --d7:#6B5E4C;
   --f-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
   --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
@@ -32,11 +33,11 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#111816;--panel:#161F1C;--ink:#E3E9E4;--muted:#93A39E;--line:#2C3934;--accent:#E0B23F;--accent-soft:#3A3120;
   --land:#1A231F;--sea:#0F1C1F;--sea-ink:#5F858A;--river:#28464B;--grid:#212C28;--halo:#1A231F;
-  --d1:#E07A5E;--d2:#E0B23F;--d3:#5DB3B9;--d4:#74B583;--d5:#B88AC0;--d6:#8597D8;--d7:#B3A48D;color-scheme:dark}}
+  --d1:#E07A5E;--d2:#E0B23F;--d3:#5DB3B9;--d4:#74B583;--d5:#B88AC0;--d6:#8597D8;--d7:#B3A48D;--park:#6EA6E6;color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#111816;--panel:#161F1C;--ink:#E3E9E4;--muted:#93A39E;--line:#2C3934;--accent:#E0B23F;--accent-soft:#3A3120;
   --land:#1A231F;--sea:#0F1C1F;--sea-ink:#5F858A;--river:#28464B;--grid:#212C28;--halo:#1A231F;
-  --d1:#E07A5E;--d2:#E0B23F;--d3:#5DB3B9;--d4:#74B583;--d5:#B88AC0;--d6:#8597D8;--d7:#B3A48D;color-scheme:dark}
+  --d1:#E07A5E;--d2:#E0B23F;--d3:#5DB3B9;--d4:#74B583;--d5:#B88AC0;--d6:#8597D8;--d7:#B3A48D;--park:#6EA6E6;color-scheme:dark}
 
 html,body{height:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;overflow:hidden}
@@ -105,6 +106,62 @@ svg#map.dragging{cursor:grabbing}
 .mk{cursor:pointer}
 .mk text{pointer-events:none}
 
+.modes{display:flex;gap:3px;margin-top:8px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px;width:max-content}
+.modes button{all:unset;cursor:pointer;padding:4px 16px;border-radius:7px;font-size:13.5px;font-weight:500;color:var(--muted)}
+.modes button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 2px rgb(0 0 0 / .14)}
+.modes button:focus-visible{outline:2px solid var(--accent)}
+.park{display:grid;gap:6px;padding-top:8px;border-top:1px dashed var(--line)}
+.park h4{margin:0;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px}
+.pbadge{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:4px;background:var(--park);color:var(--panel);font-family:var(--f-mono);font-size:11px;font-weight:500}
+.pbtn{font:inherit;font-size:13px;cursor:pointer;color:var(--park);background:var(--panel);border:1px solid currentColor;border-radius:6px;padding:3px 10px;width:max-content}
+.plist{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.plist button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:1fr auto;gap:8px;padding:6px 9px;border-radius:6px;background:var(--panel);border:1px solid var(--line);font-size:13px;line-height:1.4}
+.plist button.on{border-color:var(--park)}
+.plist button:focus-visible{outline:2px solid var(--accent)}
+.fee{font-size:12px;color:var(--muted)}
+.fee.free{color:var(--d4);font-weight:500}
+.fee.paid{color:var(--d1)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+.ledger{flex:1;overflow-y:auto;padding:14px 20px 32px;min-height:0;display:flex;flex-direction:column;gap:20px}
+.total{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap}
+.total b{font-family:var(--f-display);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.total span{color:var(--muted);font-size:13px}
+.sumgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sumgrid h4,.recs h3{margin:0 0 6px;font-size:11.5px;letter-spacing:.12em;color:var(--muted);font-weight:500;font-family:var(--f-mono)}
+.bars{display:grid;gap:5px}
+.bar{display:grid;grid-template-columns:4.6em 1fr;gap:2px 8px;align-items:center;font-size:12.5px}
+.bar .track{height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
+.bar .fill{height:100%;background:var(--accent);border-radius:4px}
+.bar .v{grid-column:2;font-size:11.5px;color:var(--muted)}
+form.add{display:grid;gap:10px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+form.add .ttl{font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:minmax(0,1fr) 5.2em;gap:6px}
+.f{display:grid;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ledger input:not([type=radio]),.ledger select{font:inherit;font-size:15px;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:7px 9px;min-width:0;width:100%}
+.seg{display:flex;flex-wrap:wrap;gap:5px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{cursor:pointer;font-size:13px;border:1px solid var(--line);border-radius:999px;padding:3px 11px;background:var(--panel);color:var(--ink)}
+.seg input:checked+label{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.seg input:focus-visible+label{outline:2px solid var(--accent);outline-offset:1px}
+.primary{font:inherit;font-weight:700;border:0;border-radius:8px;padding:9px;background:var(--accent);color:var(--on-accent);cursor:pointer}
+.ghost{font:inherit;font-size:13px;cursor:pointer;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:4px 10px}
+.msg{font-size:12.5px;color:var(--d4);min-height:1.2em}
+.recs{display:grid;gap:14px}
+.rec{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.cat{font-size:11.5px;border-radius:4px;padding:1px 7px;background:var(--accent-soft);white-space:nowrap}
+.rec .it{font-size:14px;overflow-wrap:anywhere}
+.rec .sub2{font-size:12px;color:var(--muted)}
+.rec .amt{text-align:right;font-size:14px}
+.rec .acts{grid-column:2/4;display:flex;gap:6px;justify-content:flex-end}
+.rec .acts button{font:inherit;font-size:12px;background:none;border:0;color:var(--muted);cursor:pointer;padding:0 2px;text-decoration:underline;text-underline-offset:2px}
+.rec .acts button.danger{color:var(--d1);font-weight:700}
+.dayt{display:flex;justify-content:space-between}
+.empty{padding:18px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:13.5px;text-align:center}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;color:var(--muted)}
+.tools input{width:5.5em!important;padding:4px 7px!important;font-size:13px!important}
+
 @media (max-width:760px){
   .app{grid-template-columns:100%;grid-template-rows:auto 40vh minmax(0,1fr)}
   .side{display:contents}
@@ -112,7 +169,12 @@ svg#map.dragging{cursor:grabbing}
   h1{font-size:21px}
   .mapwrap{grid-row:2;border-block:1px solid var(--line)}
   .lower{grid-row:3;display:flex;flex-direction:column;min-height:0;background:var(--panel)}
-  .tabs,.list{padding-left:16px;padding-right:16px}
+  .tabs,.list,.ledger{padding-left:16px;padding-right:16px}
+  .app.ledger-mode{grid-template-rows:auto 0 minmax(0,1fr)}
+  .app.ledger-mode .mapwrap{display:none}
+  .sumgrid{grid-template-columns:1fr}
+  .legend{font-size:11px;padding:4px 8px;gap:2px 8px;left:8px;bottom:8px;max-width:calc(100% - 64px)}
+  .legend .lnote{display:none}
 }
 @media (min-width:761px){.lower{display:contents}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -122,16 +184,18 @@ svg#map.dragging{cursor:grabbing}
 <body>
 
 
-<div class="app">
+<div class="app" id="app">
   <aside class="side">
     <header>
       <span class="eyebrow">2026 · 11/18 – 11/24 · 慶尚道</span>
       <h1>慶尚的<em>時光</em>漫旅</h1>
       <span class="sub">金海 → 蔚山 → 慶州 → 浦項 → 大邱 → 金海　點選地點即在地圖上定位</span>
+      <div class="modes" role="group" aria-label="切換頁面"><button id="m-trip" aria-pressed="true">行程</button><button id="m-led" aria-pressed="false">記帳</button></div>
     </header>
     <div class="lower">
       <div class="tabs" role="tablist" id="tabs"></div>
       <div class="list" id="list"></div>
+      <div class="ledger" id="ledger" hidden></div>
     </div>
   </aside>
   <section class="mapwrap" aria-label="行程地圖">
@@ -252,7 +316,7 @@ function apply(){
   const [w,h]=size();
   svg.setAttribute("viewBox",`${cx-w*upp/2} ${cy-h*upp/2} ${w*upp} ${h*upp}`);
   scaled.forEach(([e,s,k])=>{e.setAttribute("font-size",s*upp); if(k==="city") e.setAttribute("opacity", upp<0.25?0.25:0.55)});
-  renderMarks();
+  renderMarks();renderPark();
 }
 let anim=null;
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -313,6 +377,18 @@ function renderMarks(){
   });
 }
 const isAct=it=>active&&active[0]===it.i&&active[1]===it.j;
+function renderPark(){
+  const u=upp;
+  park.results.forEach((p,k)=>{
+    const [x,y]=P(p.lat,p.lng),on=k===park.on,r=(on?9:7)*u;
+    const g=el("g",{class:"mk"},gM);
+    g.addEventListener("click",e=>{e.stopPropagation();pickPark(k)});
+    el("title",{},g).textContent=p.name;
+    el("rect",{x:x-r,y:y-r,width:2*r,height:2*r,rx:2*u,fill:on?"var(--park)":"var(--panel)",stroke:"var(--park)","stroke-width":1.5,"vector-effect":"non-scaling-stroke"},g);
+    const t=el("text",{x,y:y+3.6*u,"text-anchor":"middle","font-size":(on?11:9.5)*u,"font-family":"var(--f-mono)","font-weight":500,fill:on?"var(--panel)":"var(--park)"},g);t.textContent="P";
+    if(on){const l=el("text",{x:x+r+5*u,y:y+4*u,"font-size":12.5*u,"font-weight":700,"font-family":"var(--f-body)",fill:"var(--park)",stroke:"var(--halo)","stroke-width":4,"paint-order":"stroke","vector-effect":"non-scaling-stroke"},g);l.textContent=p.name}
+  });
+}
 
 const tabs=document.getElementById("tabs"), list=document.getElementById("list"), legend=document.getElementById("legend");
 function buildTabs(){
@@ -347,6 +423,7 @@ function buildList(){
         const L=[...(s.links||[])];
         if(s.lat){L.push(["Naver 地圖",naver(s.ko||s.n)]);L.push(["Google 地圖",gmap(s)])}
         if(L.length)h+=`<div class="links">${L.map(([k,u])=>`<a href="${u}" target="_blank" rel="noopener">${k} ↗</a>`).join("")}</div>`;
+        if(s.lat&&!s.hotel)h+=parkHTML(s,i,j);
         if(s.approx)h+=`<p class="time">地圖位置為約略，出發前請以 Naver 地圖確認。</p>`;
         if(s.text)h+=`<p class="time">沒有固定地點。</p>`;
         d.innerHTML=h;li.appendChild(d);
@@ -357,10 +434,10 @@ function buildList(){
   });
 }
 function setDay(i,keepActive){
-  day=i; if(!keepActive)active=null;
+  day=i; if(!keepActive){active=null;park={key:null,html:"",results:[],on:-1}}
   [...tabs.children].forEach((t,k)=>t.setAttribute("aria-selected",k===i+1));
   tabs.children[i+1].scrollIntoView({block:"nearest",inline:"nearest"});
-  legend.innerHTML=(i===-1?D.map((d,k)=>`<span><i style="background:${dc(k)}"></i>${d.d}</span>`).join(""):`<span><i style="background:${dc(i)}"></i>${D[i].d} ${D[i].title}</span>`)+`<span>虛線為順序示意，非實際路線</span>`;
+  legend.innerHTML=(i===-1?D.map((d,k)=>`<span><i style="background:${dc(k)}"></i>${d.d}</span>`).join(""):`<span><i style="background:${dc(i)}"></i>${D[i].d} ${D[i].title}</span>`)+`<span class="lnote">虛線為順序示意，非實際路線</span>`;
   buildList();
   if(!keepActive){fit(i===-1?D.flatMap(d=>d.stops):D[i].stops);list.scrollTop=0}
   else apply();
@@ -369,6 +446,7 @@ function select(i,j,fromMap){
   const same=active&&active[0]===i&&active[1]===j;
   if(day!==-1&&day!==i||fromMap&&day===-1)setDay(i,true);
   active=same&&!fromMap?null:[i,j];
+  if(park.key!==i+","+j)park={key:null,html:"",results:[],on:-1};
   buildList();
   const s=D[i].stops[j];
   if(active&&s.lat) flyTo(px(s.lng),py(s.lat),Math.min(upp,0.09));
@@ -392,7 +470,173 @@ document.getElementById("zout").onclick=()=>flyTo(cx,cy,upp*1.8,300);
 document.getElementById("zfit").onclick=()=>fit(day===-1?D.flatMap(d=>d.stops):D[day].stops);
 let rT;addEventListener("resize",()=>{clearTimeout(rT);rT=setTimeout(apply,80)});
 
-// mobile: tabs live inside lower panel
+
+// ---------- Parking ----------
+const PARK={
+ "佛國寺":{t:"有不二門與正門兩處售票口停車場，假日常非常擁擠；也可停公營停車場，步行約 10 分鐘上山。停車費未查到確切金額。",sn:"맘맘",src:"https://mom-mom.net/travel/places/6639d8c7204b87c6002beef9"},
+ "石窟庵":{t:"石窟庵停車場：小型車 2,000 韓元、大型車 4,000 韓元，低公害車 5 折。停車場到石窟庵走山路與階梯約 15–20 分鐘。",sn:"맘맘",src:"https://mom-mom.net/travel/places/65a8790e0c3d3817eaa5555d"},
+ "大陵苑":{t:"大陵苑停車場：2 小時 2,000 韓元，之後每小時 1,000 韓元。常滿車，可改停附近公營停車場。瞻星臺、東宮與月池可從這裡步行或短程開車。",sn:"맘맘",src:"https://mom-mom.net/travel/places/655ad5b87befcfe324f22e5b"},
+ "慶州良洞村":{t:"村口有專用停車場，免費。停車場走到售票處約 5 分鐘。",sn:"맘맘",src:"https://mom-mom.net/travel/places/6670e6269081a5f147ae46f4"},
+ "八公山纜車":{t:"售票處旁 1 分鐘有停車場，免費，約 70 個中小型車位。",sn:"맘맘",src:"https://mom-mom.net/travel/places/655c034d7befcfe324f236b9"}
+};
+let park={key:null,html:"",results:[],on:-1};
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const hav=(a,b,c,d)=>{const R=6371e3,r=Math.PI/180,x=Math.sin((c-a)*r/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin((d-b)*r/2)**2;return 2*R*Math.asin(Math.sqrt(x))};
+function parkHTML(s,i,j){
+  const c=PARK[s.n],q=(s.ko||s.n).replace(/\s*·.*$/,"")+" 주차장",key=i+","+j;
+  let h=`<div class="park"><h4><span class="pbadge">P</span>停車</h4>`;
+  h+=c?`<p>${c.t}</p><p class="fee">資料來源：<a href="${c.src}" target="_blank" rel="noopener">${c.sn}</a>（費用可能調整，以現場為準）</p>`:`<p class="fee">還沒有查到可靠的停車費資料，可用下方搜尋。</p>`;
+  h+=`<button class="pbtn" data-park="${key}">${park.key===key&&park.results.length?"重新搜尋":"搜尋 900 公尺內停車場"}</button>`;
+  h+=`<div id="pres-${i}-${j}">${park.key===key?park.html:""}</div>`;
+  h+=`<div class="links"><a href="${naver(q)}" target="_blank" rel="noopener">Naver 搜尋附近停車場（多有費用）↗</a><a href="https://map.kakao.com/?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">Kakao 地圖 ↗</a></div></div>`;
+  return h;
+}
+function feeOf(p){
+  let f=p.fee==="no"?`<span class="fee free">免費</span>`:p.fee==="yes"?`<span class="fee paid">收費${p.charge?"・"+esc(p.charge):""}</span>`:`<span class="fee">費用未標示</span>`;
+  if(p.cap)f+=`<span class="fee">・${esc(p.cap)} 位</span>`;
+  return f;
+}
+function parkListHTML(){
+  if(!park.results.length)return `<p class="fee">900 公尺內沒有找到登錄在 OpenStreetMap 的停車場，請改用 Naver 搜尋。</p>`;
+  return `<ul class="plist">${park.results.map((p,k)=>`<li><button data-pr="${k}" class="${k===park.on?"on":""}"><span><b>${esc(p.name)}</b><br>${feeOf(p)}</span><span class="fee mono">${p.dist<1000?Math.round(p.dist/10)*10+" m":(p.dist/1000).toFixed(1)+" km"}</span></button></li>`).join("")}</ul><p class="fee">資料來自 OpenStreetMap，費用常未標示，最終以現場告示為準。</p>`;
+}
+function paintPark(){
+  const [i,j]=park.key.split(",");const box=document.getElementById(`pres-${i}-${j}`);
+  if(box)box.innerHTML=park.html;apply();
+}
+async function searchPark(key){
+  const [i,j]=key.split(",").map(Number),s=D[i].stops[j];
+  park={key,html:`<p class="fee">搜尋中…</p>`,results:[],on:-1};paintPark();
+  const q=`[out:json][timeout:20];(node["amenity"="parking"](around:900,${s.lat},${s.lng});way["amenity"="parking"](around:900,${s.lat},${s.lng});relation["amenity"="parking"](around:900,${s.lat},${s.lng}););out center tags 60;`;
+  try{
+    const r=await fetch("https://overpass-api.de/api/interpreter",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"data="+encodeURIComponent(q)});
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    const js=await r.json();
+    if(park.key!==key)return;
+    park.results=js.elements.map(e=>{const t=e.tags||{},la=e.lat??e.center?.lat,lo=e.lon??e.center?.lon;
+      return{lat:la,lng:lo,name:t["name:ko"]||t.name||t["name:en"]||"停車場（未命名）",fee:t.fee,charge:t.charge,cap:t.capacity,access:t.access,dist:la?hav(s.lat,s.lng,la,lo):1e9}})
+      .filter(p=>p.lat&&!["private","no","customers"].includes(p.access)).sort((a,b)=>a.dist-b.dist).slice(0,8);
+    park.html=parkListHTML();
+    const b=document.querySelector(`[data-park="${key}"]`);if(b)b.textContent="重新搜尋";
+    paintPark();
+    if(park.results.length){const all=[s,...park.results];fit(all)}
+  }catch(err){
+    if(park.key!==key)return;
+    park.html=`<p class="fee">線上搜尋沒有成功。在 Claude 的預覽裡外部連線會被擋下，放到 GitHub 網頁版就能使用；也可能是網路不穩，請稍後再試。現在可先用下方 Naver／Kakao 連結。</p>`;
+    paintPark();
+  }
+}
+function pickPark(k){
+  park.on=k;park.html=parkListHTML();paintPark();
+  const p=park.results[k];flyTo(px(p.lng),py(p.lat),Math.min(upp,0.06));
+}
+list.addEventListener("click",e=>{
+  const b=e.target.closest("[data-park]");if(b){searchPark(b.dataset.park);return}
+  const r=e.target.closest("[data-pr]");if(r)pickPark(+r.dataset.pr);
+});
+
+// ---------- Ledger ----------
+const CATS=["吃飯","門票","交通停車","購物","住宿","其他"];
+const PAYS=["現金","信用卡","T-money","WOWPASS","其他"];
+let LED={rate:45,recs:[]};
+try{const v=localStorage.getItem("gyeongsang-ledger");if(v)LED=Object.assign(LED,JSON.parse(v))}catch(_){}
+const saveLed=()=>{try{localStorage.setItem("gyeongsang-ledger",JSON.stringify(LED))}catch(_){}};
+const fmt=n=>Math.round(n).toLocaleString("en-US");
+const krw=r=>r.cur==="TWD"?r.amt*LED.rate:r.amt;
+let editId=null,delId=null;
+const ledger=document.getElementById("ledger");
+function todayIdx(){const t=new Date(),m=String(t.getMonth()+1).padStart(2,"0")+"/"+String(t.getDate()).padStart(2,"0");const k=D.findIndex(d=>d.d===m);return t.getFullYear()===2026&&k>=0?k:0}
+function buildLedger(){
+  const seg=(name,arr)=>arr.map((x,k)=>`<input type="radio" name="${name}" id="${name}-${k}" value="${x}"${k===0?" checked":""}><label for="${name}-${k}">${x}</label>`).join("");
+  ledger.innerHTML=`
+  <section id="lsum"></section>
+  <form class="add" id="lform" autocomplete="off">
+    <div class="ttl"><span id="fttl">新增一筆</span><button type="button" class="ghost" id="fcancel" hidden>取消修改</button></div>
+    <div class="row">
+      <label class="f">日期<select id="f-day">${D.map((d,k)=>`<option value="${k}">${d.d}（${d.w}）D${k+1}</option>`).join("")}</select></label>
+      <label class="f">金額<span class="row3"><input id="f-amt" type="number" inputmode="decimal" min="0" step="any" placeholder="15000" required><select id="f-cur"><option value="KRW">韓元</option><option value="TWD">台幣</option></select></span></label>
+    </div>
+    <div class="f">類別<div class="seg">${seg("cat",CATS)}</div></div>
+    <label class="f">項目<input id="f-item" type="text" maxlength="40" placeholder="例如：佛國寺門票、豬肉湯飯"></label>
+    <div class="f">付款方式<div class="seg">${seg("pay",PAYS)}</div></div>
+    <button class="primary" id="fsubmit" type="submit">新增</button>
+    <div class="msg" id="fmsg" aria-live="polite"></div>
+  </form>
+  <section class="recs" id="lrecs"></section>
+  <div class="tools">
+    <label for="f-rate">匯率：1 台幣 =</label><input id="f-rate" type="number" min="1" step="0.01" value="${LED.rate}"><span>韓元（請依實際匯率修改）</span>
+  </div>
+  <div class="tools"><button class="ghost" id="lcsv" type="button">匯出 CSV</button><span id="csvmsg"></span></div>
+  <p class="fee">記錄只存在這台裝置的瀏覽器裡，換手機或清除瀏覽資料就會不見，旅途中記得偶爾匯出備份。</p>`;
+  document.getElementById("f-day").value=todayIdx();
+  const f=document.getElementById("lform");
+  f.addEventListener("submit",e=>{e.preventDefault();
+    const amt=parseFloat(document.getElementById("f-amt").value);
+    const msg=document.getElementById("fmsg");
+    if(!(amt>0)){msg.style.color="var(--d1)";msg.textContent="請輸入大於 0 的金額。";return}
+    const rec={id:editId||Date.now(),day:+document.getElementById("f-day").value,cat:f.cat.value,pay:f.pay.value,
+      item:document.getElementById("f-item").value.trim(),amt,cur:document.getElementById("f-cur").value};
+    if(editId){LED.recs=LED.recs.map(r=>r.id===editId?rec:r)}else LED.recs.push(rec);
+    msg.style.color="";msg.textContent=editId?"已儲存修改。":`已新增：${rec.cat} ${fmt(rec.amt)} ${rec.cur==="KRW"?"韓元":"台幣"}`;
+    stopEdit();saveLed();renderLedger();
+  });
+  document.getElementById("fcancel").onclick=()=>{stopEdit();document.getElementById("fmsg").textContent=""};
+  document.getElementById("f-rate").addEventListener("input",e=>{const v=parseFloat(e.target.value);if(v>0){LED.rate=v;saveLed();renderLedger()}});
+  document.getElementById("lcsv").onclick=exportCSV;
+  ledger.addEventListener("click",e=>{
+    const b=e.target.closest("[data-act]");if(!b)return;const id=+b.dataset.id;
+    if(b.dataset.act==="edit")startEdit(id);
+    else if(b.dataset.act==="del"){if(delId===id){LED.recs=LED.recs.filter(r=>r.id!==id);delId=null;if(editId===id)stopEdit();saveLed()}else delId=id;renderLedger()}
+  });
+  renderLedger();
+}
+function startEdit(id){
+  const r=LED.recs.find(x=>x.id===id);if(!r)return;editId=id;
+  document.getElementById("f-day").value=r.day;document.getElementById("f-amt").value=r.amt;document.getElementById("f-cur").value=r.cur;
+  document.getElementById("f-item").value=r.item;
+  const f=document.getElementById("lform");f.cat.value=r.cat;f.pay.value=r.pay;
+  document.getElementById("fttl").textContent="修改這筆";document.getElementById("fsubmit").textContent="儲存修改";document.getElementById("fcancel").hidden=false;
+  f.scrollIntoView({block:"nearest",behavior:reduce?"auto":"smooth"});document.getElementById("f-amt").focus();
+}
+function stopEdit(){
+  editId=null;document.getElementById("f-amt").value="";document.getElementById("f-item").value="";
+  document.getElementById("fttl").textContent="新增一筆";document.getElementById("fsubmit").textContent="新增";document.getElementById("fcancel").hidden=true;
+}
+function renderLedger(){
+  const R=LED.recs,tot=R.reduce((a,r)=>a+krw(r),0);
+  const group=(k,keys)=>keys.map(x=>[x,R.filter(r=>r[k]===x).reduce((a,r)=>a+krw(r),0)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
+  const bars=g=>g.length?`<div class="bars">${g.map(([n,v])=>`<div class="bar"><span>${n}</span><div class="track"><div class="fill" style="width:${(v/tot*100).toFixed(1)}%"></div></div><span class="v mono">${fmt(v)} ₩・${Math.round(v/tot*100)}%</span></div>`).join("")}</div>`:`<p class="fee">尚無資料</p>`;
+  document.getElementById("lsum").innerHTML=`<div class="total"><b>₩ ${fmt(tot)}</b><span class="mono">≈ NT$ ${fmt(tot/LED.rate)}</span><span>${R.length} 筆</span></div>
+    ${R.length?`<div class="sumgrid" style="margin-top:12px"><div><h4>依類別</h4>${bars(group("cat",CATS))}</div><div><h4>依付款方式</h4>${bars(group("pay",PAYS))}</div></div>`:""}`;
+  const box=document.getElementById("lrecs");
+  if(!R.length){box.innerHTML=`<div class="empty">還沒有記錄。在上方輸入金額、選類別與付款方式後按「新增」，這裡就會依日期列出每一筆，並自動加總。</div>`;return}
+  box.innerHTML=D.map((d,k)=>{const rs=R.filter(r=>r.day===k).sort((a,b)=>a.id-b.id);if(!rs.length)return"";
+    const sub=rs.reduce((a,r)=>a+krw(r),0);
+    return `<div><h3 class="dayt"><span>${d.d}（${d.w}）D${k+1}</span><span class="mono">₩ ${fmt(sub)}</span></h3>${rs.map(r=>`<div class="rec"><span class="cat">${r.cat}</span><span><span class="it">${esc(r.item||r.cat)}</span><br><span class="sub2">${r.pay}</span></span><span class="amt mono">${r.cur==="KRW"?"₩ "+fmt(r.amt):"NT$ "+fmt(r.amt)}${r.cur==="TWD"?`<br><span class="sub2">≈ ₩ ${fmt(krw(r))}</span>`:""}</span><span class="acts"><button type="button" data-act="edit" data-id="${r.id}">修改</button><button type="button" data-act="del" data-id="${r.id}" class="${delId===r.id?"danger":""}">${delId===r.id?"確定刪除？":"刪除"}</button></span></div>`).join("")}</div>`}).join("");
+}
+async function exportCSV(){
+  const q=v=>`"${String(v).replace(/"/g,'""')}"`;
+  const rows=[["日期","類別","項目","金額","幣別","換算韓元","付款方式"],...LED.recs.slice().sort((a,b)=>a.day-b.day||a.id-b.id).map(r=>[D[r.day].d,r.cat,r.item,r.amt,r.cur,Math.round(krw(r)),r.pay])];
+  const csv="﻿"+rows.map(r=>r.map(q).join(",")).join("\n");
+  const m=document.getElementById("csvmsg");
+  try{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="慶尚旅行記帳.csv";document.body.appendChild(a);a.click();a.remove()}catch(_){}
+  try{await navigator.clipboard.writeText(csv.slice(1));m.textContent="已下載檔案，並複製到剪貼簿，可貼到 Excel 或 Google 試算表。"}
+  catch(_){m.textContent="已嘗試下載檔案；若沒有出現，請在 GitHub 網頁版使用。"}
+}
+
+// ---------- Mode ----------
+function setMode(m){
+  const led=m==="led";
+  document.getElementById("app").classList.toggle("ledger-mode",led);
+  document.getElementById("m-trip").setAttribute("aria-pressed",!led);
+  document.getElementById("m-led").setAttribute("aria-pressed",led);
+  tabs.hidden=led;list.hidden=led;ledger.hidden=!led;
+  if(!led)setTimeout(apply,0);
+}
+document.getElementById("m-trip").onclick=()=>setMode("trip");
+document.getElementById("m-led").onclick=()=>setMode("led");
+buildLedger();
+
 buildTabs();
 upp=maxUpp();apply();
 setDay(-1);

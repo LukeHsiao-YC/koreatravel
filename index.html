@@ -854,7 +854,7 @@ function renderWeather(){
 
 /* ---------- UI ---------- */
 const tabs=document.getElementById("tabs"),panel=document.getElementById("panel"),legend=document.getElementById("legend");
-const tabList=[{id:"all",b:"全覽",s:"8 天"},{id:"docs",b:"📁",s:"訂位"},{id:"money",b:"💰",s:"記帳"},{id:"calc",b:"🧮",s:"換算"},{id:"weather",b:"🌤️",s:"天氣"}].concat(days.map((d,i)=>({id:"day"+(i+1),b:d.d,s:d.tab})));
+const tabList=[{id:"all",b:"全覽",s:"8 天"},{id:"docs",b:"📁",s:"訂位"},{id:"calc",b:"🧮",s:"換算"},{id:"weather",b:"🌤️",s:"天氣"}].concat(days.map((d,i)=>({id:"day"+(i+1),b:d.d,s:d.tab})));
 tabList.forEach(t=>{const b=document.createElement("button");b.className="tab";b.dataset.id=t.id;b.innerHTML=`<b>${t.b}</b><span>${t.s}</span>`;b.onclick=()=>{location.hash=t.id};tabs.appendChild(b)});
 
 function seqFor(i){const d=days[i];return{pts:d.stops.map(s=>pr(P[s.k])),stops:d.stops,color:DAYCOL[i]}}

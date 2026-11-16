@@ -257,6 +257,26 @@ footer{color:var(--ink2);font-size:12px;text-align:center;padding:10px 16px 30px
 .sayc{background:var(--ink);color:#fff;border-radius:12px;padding:12px 14px}
 .sayc b{display:block;font-size:22px;line-height:1.35}
 .sayc span{font-size:13px;color:#e3a923}
+.ecard{background:#fffaf0;border:1px solid var(--line);border-radius:14px;padding:4px 12px;margin-top:8px}
+.erow2{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.erow2:last-child{border-bottom:none}
+.erow2>div:first-child{flex:1;min-width:0}
+.erow2 b{display:block;font-size:14.5px}
+.erow2 small{font-size:12px;color:var(--ink2)}
+.enum{text-align:right;flex:0 0 auto}
+.enum a{display:block;font-weight:700;font-size:16px;color:var(--persimmon);text-decoration:none}
+.enum .cp{margin:3px 0 0}
+.phl{display:grid;gap:6px;margin-top:8px}
+.ph{display:flex;align-items:center;gap:10px;background:#fffaf0;border:1px solid var(--line);border-radius:12px;padding:9px 12px}
+.pht{flex:1;min-width:0}
+.pht b{display:block;font-size:19px;line-height:1.35}
+.pht small{display:block;font-size:11.5px;color:var(--ink2);font-style:italic}
+.pht span{font-size:13.5px;color:var(--pine);font-weight:500}
+.spk{border:none;background:var(--paper2);border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer;flex:0 0 auto}
+.spk.on{background:var(--ginkgo)}
+.leg{position:relative;padding:0 0 12px 44px;font-size:12.5px;color:var(--ink2)}
+.leg span{background:var(--paper2);border-radius:10px;padding:3px 9px}
+.drivesum{display:inline-block;margin-top:6px;font-size:12.5px;background:var(--ink);color:#fff;border-radius:12px;padding:3px 10px}
 </style>
 </head>
 <body>
@@ -277,7 +297,7 @@ footer{color:var(--ink2);font-size:12px;text-align:center;padding:10px 16px 30px
   <section class="panel" id="panel"></section>
 </main>
 <div class="viewer" id="viewer"><div class="vbar"><b id="vtitle"></b><button id="vclose">✕ 關閉</button></div><div class="vbody" id="vbody"></div></div>
-<footer>地圖為示意，路線以直線連接各站，非實際道路；開車請以 Naver Map 導航為準。</footer>
+<footer>地圖為示意，路線以直線連接各站，非實際道路；車程是依距離估算，開車請以 Naver Map 導航為準。</footer>
 
 <script>
 const C={persimmon:"#d9642b",ginkgo:"#e3a923",pine:"#3f6b55",ink:"#2b2622"};
@@ -919,9 +939,72 @@ function renderDrive(){
   show("rules");
 }
 
+const SPEAK_ON=false;
+/* ---------- emergency ---------- */
+function telRow(name,num,note,dial){const d=(dial||num).replace(/[^\d+]/g,"");
+  return `<div class="erow2"><div><b>${name}</b>${note?`<small>${note}</small>`:""}</div><div class="enum"><a href="tel:${d}">${num}</a><button class="cp" data-c="${num}">複製</button></div></div>`}
+function renderSOS(){
+  panel.innerHTML=`<div class="dayhead"><div class="route">EMERGENCY</div><h2>🆘 緊急聯絡</h2></div>
+  <div class="callout">電話號碼點了如果沒反應，按「複製」再貼到撥號畫面。</div>
+  <div class="docgrp">韓國緊急電話</div><div class="ecard">
+   ${telRow("報警","112","警察")}${telRow("救護車・消防","119","受傷、急病、火災")}${telRow("觀光翻譯熱線","1330","24 小時，可以說中文，幫忙翻譯溝通")}</div>
+  <div class="docgrp">台灣駐外單位（負責慶尚道）</div><div class="ecard">
+   ${telRow("駐韓國台北代表部釜山辦事處","051-463-7965","上班時間一般電話")}
+   ${telRow("釜山辦事處 緊急電話","010-4537-7961","只限中文，非急難重大事件請勿撥打")}
+   ${telRow("外交部 旅外國人緊急服務","+886-800-085-095","24 小時；從韓國也可撥免付費 001-800-0885-0885")}</div>
+  <div class="docgrp">租車</div><div class="ecard">
+   ${telRow("樂天租車 客服中心","1588-1230","故障、事故先打這支；預約編號 2622652043")}
+   <div class="shoothint" style="padding:6px 0">取車時記得問金海機場分店電話和道路救援電話，寫在這裡最保險。</div></div>
+  <div class="docgrp">住宿</div><div class="ecard">
+   ${telRow("Sorgente Business Hotel","+82 10-7582-2349","11/17・釜山")}
+   <div class="erow2"><div><b>Gyeongju Silla Legacy Hotel</b><small>11/18–11/20・慶州</small></div><div class="enum"><a href="https://naver.me/5T4qhEml" target="_blank" rel="noopener">Naver 查電話</a></div></div>
+   <div class="erow2"><div><b>Pohang Mundeok Hotel XYM</b><small>11/20・浦項</small></div><div class="enum"><a href="https://naver.me/5Jp97UcU" target="_blank" rel="noopener">Naver 查電話</a></div></div>
+   ${telRow("桐華寺 Temple Stay（WhatsApp）","+82 10-4071-3975","11/21・09:00–17:00")}
+   ${telRow("UH FLAT SIGNATURE DAEGU","+82 10-9781-7413","11/22–11/24・大邱")}</div>
+  <div class="docgrp">給韓國人看</div>
+  <div class="say">
+   <div class="sayc"><b>저는 대만 관광객이에요. 한국어를 잘 못해요. 도와주세요.</b><span>我是台灣觀光客，不太會說韓文，請幫幫我。</span></div>
+   <div class="sayc"><b>사고가 났어요. 경찰을 불러 주세요.</b><span>發生事故了，請幫我叫警察。</span></div>
+   <div class="sayc"><b>아이가 아파요. 가까운 병원이 어디예요?</b><span>小孩生病了，最近的醫院在哪裡？</span></div>
+   <div class="sayc"><b>1330에 전화해 주실 수 있어요?</b><span>可以幫我打 1330（觀光翻譯熱線）嗎？</span></div>
+  </div>`;
+}
+/* ---------- phrases ---------- */
+const PHR=[
+ ["🍽️ 餐廳",[["메뉴판 주세요","me-nyu-pan ju-se-yo","請給我菜單"],["이거 주세요","i-geo ju-se-yo","我要這個（指著菜單）"],["어른 두 명, 아이 두 명이에요","eo-reun du myeong, a-i du myeong-i-e-yo","兩個大人、兩個小孩"],["안 맵게 해 주세요","an maep-ge hae ju-se-yo","請不要辣"],["아이도 먹을 수 있어요?","a-i-do meo-geul su i-sseo-yo?","小孩也可以吃嗎？"],["물 좀 주세요","mul jom ju-se-yo","請給我水"],["앞접시 주세요","ap-jeop-si ju-se-yo","請給我小盤子"],["포장해 주세요","po-jang-hae ju-se-yo","請幫我打包"],["계산해 주세요","gye-san-hae ju-se-yo","請結帳"],["따로 계산할게요","tta-ro gye-san-hal-ge-yo","我們要分開結帳"],["카드 돼요?","ka-deu dwae-yo?","可以刷卡嗎？"],["맛있어요!","ma-si-sseo-yo!","好好吃！"]]],
+ ["🏨 住宿",[["체크인하려고요","che-keu-in-ha-ryeo-go-yo","我要辦入住"],["예약했어요. 이름은 Hsiao예요","ye-ya-kae-sseo-yo. i-reu-meun Hsiao-ye-yo","我有預約，名字是 Hsiao"],["짐 맡겨도 돼요?","jim mat-gyeo-do dwae-yo?","可以寄放行李嗎？"],["주차장 어디예요?","ju-cha-jang eo-di-ye-yo?","停車場在哪裡？"],["와이파이 비밀번호가 뭐예요?","wa-i-pa-i bi-mil-beon-ho-ga mwo-ye-yo?","Wi-Fi 密碼是什麼？"],["체크아웃할게요","che-keu-a-ut-hal-ge-yo","我要退房"]]],
+ ["🚗 開車・問路",[["여기 주차해도 돼요?","yeo-gi ju-cha-hae-do dwae-yo?","這裡可以停車嗎？"],["주차비 얼마예요?","ju-cha-bi eol-ma-ye-yo?","停車費多少？"],["여기 어떻게 가요?","yeo-gi eo-tteo-ke ga-yo?","這裡怎麼去？（給對方看地圖）"],["화장실 어디예요?","hwa-jang-sil eo-di-ye-yo?","廁所在哪裡？"],["가득 넣어 주세요","ga-deuk neo-eo ju-se-yo","（加油）請加滿"]]],
+ ["🛍️ 購物",[["얼마예요?","eol-ma-ye-yo?","多少錢？"],["이거 있어요?","i-geo i-sseo-yo?","有這個嗎？（給對方看照片）"],["택스 리펀 돼요?","taek-seu ri-peon dwae-yo?","可以退稅嗎？"],["봉투 주세요","bong-tu ju-se-yo","請給我袋子"],["좀 깎아 주세요","jom kka-kka ju-se-yo","可以算便宜一點嗎？（市場）"]]],
+ ["🆘 緊急・身體不舒服",[["도와주세요!","do-wa-ju-se-yo!","請幫幫我！"],["아이가 아파요","a-i-ga a-pa-yo","小孩不舒服"],["열이 나요","yeo-ri na-yo","發燒了"],["약국 어디예요?","yak-guk eo-di-ye-yo?","藥局在哪裡？"],["병원에 가야 해요","byeong-wo-ne ga-ya hae-yo","我們要去醫院"],["경찰 불러 주세요","gyeong-chal bul-leo ju-se-yo","請叫警察"]]],
+ ["🙏 基本",[["안녕하세요","an-nyeong-ha-se-yo","你好"],["감사합니다","gam-sa-ham-ni-da","謝謝"],["죄송합니다","joe-song-ham-ni-da","對不起"],["괜찮아요","gwaen-cha-na-yo","沒關係／我不用了"],["네 / 아니요","ne / a-ni-yo","是／不是"],["대만에서 왔어요","dae-ma-ne-seo wa-sseo-yo","我們從台灣來"]]]
+];
+let TTS=null,ttsTried=false;
+async function speakKo(text,btn){
+  if(!SPEAK_ON)return;
+  try{
+    if(!ttsTried){ttsTried=true;try{const CLx=typeof claude!=="undefined"&&claude&&claude.use?claude:null;TTS=CLx?await CLx.use("tts"):null}catch(_){TTS=null}}
+    btn&&btn.classList.add("on");
+    if(TTS){await TTS.speak(text,{language:"ko",rate:0.85})}
+    else if(window.speechSynthesis){await new Promise(r=>{const u=new SpeechSynthesisUtterance(text);u.lang="ko-KR";u.rate=0.85;const v=speechSynthesis.getVoices().find(v=>/^ko/i.test(v.lang));if(v)u.voice=v;u.onend=r;u.onerror=r;speechSynthesis.cancel();speechSynthesis.speak(u)})}
+    else toast("這支手機不能播放語音");
+  }catch(e){toast("沒辦法播放，請直接給對方看")}
+  btn&&btn.classList.remove("on");
+}
+function renderPhr(){
+  panel.innerHTML=`<div class="dayhead"><div class="route">KOREAN PHRASES</div><h2>🗣️ 韓文常用句</h2></div>
+  <div class="callout">${SPEAK_ON?"按 🔊 會念出來；講不出口就直接把螢幕給對方看。":"直接把螢幕給對方看，或照下面的拼音唸。"}</div>
+  ${PHR.map(([g,list])=>`<div class="docgrp">${g}</div><div class="phl">${list.map(p=>`<div class="ph"><div class="pht"><b>${p[0]}</b><small>${p[1]}</small><span>${p[2]}</span></div>${SPEAK_ON?`<button class="spk" data-say="${p[0].replace(/"/g,"&quot;")}">🔊</button>`:""}</div>`).join("")}</div>`).join("")}`;
+  panel.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speakKo(b.dataset.say,b));
+}
+/* ---------- drive time estimates ---------- */
+function hav(a,b){const R=6371,t=Math.PI/180,dl=(b[0]-a[0])*t,dn=(b[1]-a[1])*t,x=Math.sin(dl/2)**2+Math.cos(a[0]*t)*Math.cos(b[0]*t)*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(x))}
+function legEst(a,b){if(a==="donghwa"&&b==="gatbawi")return{km:0,min:0,note:"要繞到山的另一側，依路線不同差很多，請看 Naver 導航"};const km=hav(P[a],P[b])*1.3;if(km<0.4)return null;const v=km<15?35:km<40?50:70;return{km:Math.max(1,Math.round(km)),min:Math.round(km/v*60+3)}}
+function dayDrive(d){let km=0,min=0;d.stops.forEach((s,i)=>{if(!i)return;const p=d.stops[i-1];if(s.fly||(p.fly&&p.k==="KHH"))return;const e=legEst(p.k,s.k);if(e){km+=e.km;min+=e.min}});return{km,min}}
+const fmtMin=m=>m>=60?`${Math.floor(m/60)} 小時${m%60?" "+m%60+" 分":""}`:`${m} 分`;
+
 /* ---------- UI ---------- */
 const tabs=document.getElementById("tabs"),panel=document.getElementById("panel"),legend=document.getElementById("legend");
-const tabList=[{id:"all",b:"全覽",s:"8 天"},{id:"docs",b:"📁",s:"訂位"},{id:"calc",b:"🧮",s:"換算"},{id:"weather",b:"🌤️",s:"天氣"},{id:"drive",b:"🚗",s:"自駕"}].concat(days.map((d,i)=>({id:"day"+(i+1),b:d.d,s:d.tab})));
+const tabList=[{id:"all",b:"全覽",s:"8 天"},{id:"docs",b:"📁",s:"訂位"},{id:"calc",b:"🧮",s:"換算"},{id:"weather",b:"🌤️",s:"天氣"},{id:"drive",b:"🚗",s:"自駕"},{id:"talk",b:"🗣️",s:"韓文"},{id:"sos",b:"🆘",s:"緊急"}].concat(days.map((d,i)=>({id:"day"+(i+1),b:d.d,s:d.tab})));
 tabList.forEach(t=>{const b=document.createElement("button");b.className="tab";b.dataset.id=t.id;b.innerHTML=`<b>${t.b}</b><span>${t.s}</span>`;b.onclick=()=>{location.hash=t.id};tabs.appendChild(b)});
 
 function seqFor(i){const d=days[i];return{pts:d.stops.map(s=>pr(P[s.k])),stops:d.stops,color:DAYCOL[i]}}
@@ -930,10 +1013,12 @@ function render(id){
   current=id;
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.id===id));
   const on=document.querySelector(".tab.on");on&&on.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"});
-  const noMap=["docs","money","calc","weather","drive"].includes(id);
+  const noMap=["docs","money","calc","weather","drive","talk","sos"].includes(id);
   document.querySelector(".mapwrap").style.display=noMap?"none":"";
   if(noMap){token.dead=true}
   if(id==="money"){renderMoney();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
+  if(id==="talk"){renderPhr();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
+  if(id==="sos"){renderSOS();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="drive"){renderDrive();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="weather"){const t=todayTrip();if(TRIPDAYS.includes(t)&&new Date().getMonth()===10)wxCity=WDAYCITY[t];renderWeather();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="calc"){renderCalc();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
@@ -955,14 +1040,15 @@ function render(id){
     if(s.doc)chips.push(`<button class="chip doc-l" data-open="${s.doc}">📄 ${s.doc==="arr"?"入境卡":s.doc==="flight"?"機票":s.doc==="car"?"租車單":"訂房單"}</button>`);
     if(s.park)chips.push(`<span class="chip p">🅿️ ${s.park}</span>`);
     if(s.opt)chips.push(`<span class="chip opt">可選</span>`);
-    return `<li class="stop${s.fly?" fly":""}" data-j="${j}"><div class="num">${s.fly?"✈":j+1}</div><div class="card">
+    const pv=j?d.stops[j-1]:null,lg=pv&&!s.fly&&!(pv.fly&&pv.k==="KHH")?legEst(pv.k,s.k):null;
+    return (lg?`<li class="leg"><span>🚗 ${lg.note||`約 ${lg.km} km・${fmtMin(lg.min)}`}</span></li>`:"")+`<li class="stop${s.fly?" fly":""}" data-j="${j}"><div class="num">${s.fly?"✈":j+1}</div><div class="card">
       <div class="when">${s.when}</div><div class="name">${s.name}</div><div class="ko">${s.ko||""}</div>
       ${s.note?`<div class="note">${s.note}</div>`:""}
       ${s.slots?`<div class="note">${s.k==="donghwa"?"寺內行程：":"發車時間："}</div><div class="slots">${s.slots.map(x=>`<span>${x}</span>`).join("")}</div>`:""}
       ${s.opts?`<div class="opts">${s.opts.map(o=>`<div class="opt">${o}</div>`).join("")}</div>`:""}
       ${chips.length?`<div class="chips">${chips.join("")}</div>`:""}
     </div></li>`}).join("");
-  panel.innerHTML=`<div class="dayhead"><div class="route">DAY ${i+1} · ${d.d}（${d.w}）· ${d.route}</div><h2>${d.title}</h2></div>
+  panel.innerHTML=`<div class="dayhead"><div class="route">DAY ${i+1} · ${d.d}（${d.w}）· ${d.route}</div><h2>${d.title}</h2>${(()=>{const t=dayDrive(d);return t.min?`<span class="drivesum">🚗 今天開車約 ${t.km} km・${fmtMin(t.min)}（估算）</span>`:""})()}</div>
     ${d.callout?`<div class="callout">${d.callout}</div>`:""}
     <ol class="stops">${stops}</ol>
     ${d.stay?`<div class="stay"><div><div class="lbl">今晚住宿</div><div class="nm">${d.stay.nm}</div></div><span style="margin-left:auto;display:flex;gap:6px">${d.stay.doc?`<button class="chip doc-l" data-open="${d.stay.doc}" style="background:#fff;color:var(--ink)">📄 訂房單</button>`:""}${d.stay.link?`<a href="${d.stay.link}" target="_blank" rel="noopener" style="margin-left:0">Naver</a>`:""}</span></div>`:""}`;

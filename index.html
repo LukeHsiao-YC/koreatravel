@@ -302,6 +302,10 @@ footer{color:var(--ink2);font-size:12px;text-align:center;padding:10px 16px 30px
 .sayc .pen{color:#cfc4b3}
 .pce{margin-top:10px;font-size:22px;color:#2f6f8f;font-weight:700}
 .hwchip{margin-top:6px;font-size:12.5px;line-height:1.5;background:#e3eef2;color:#1f4f63;border-radius:10px;padding:5px 10px}
+.info{margin-top:7px;font-size:12.5px;line-height:1.6;background:var(--paper);border-radius:8px;padding:6px 9px;color:#3d3630}
+.info details{margin-top:3px}
+.info summary{cursor:pointer;color:var(--pine);font-weight:700}
+.info p{margin-top:4px;font-size:13px}
 </style>
 </head>
 <body>
@@ -372,11 +376,12 @@ const days=[
   {k:"hotelGJ",when:"晚上",short:"飯店",name:"回飯店",ko:"신라레거시호텔"}
  ],stay:{nm:"Gyeongju Silla Legacy Hotel",link:"https://naver.me/5T4qhEml",doc:"h2"}},
 {d:"11/20",w:"五",tab:"浦項",title:"慶州 → 浦項 海岸線",route:"慶州 → 浦項",
+ callout:"⚠️ Space Walk 11 月平日只開到 <b>17:00</b>（11/20 是週五），排在最後可能會來不及。它在浦項北邊，離良洞村比較近，可以考慮良洞村之後先去。",
  stops:[
   {k:"yangdong",when:"上午",name:"慶州良洞村",ko:"경주 양동마을",link:"https://naver.me/x67y05Nu"},
   {k:"guryong",when:"下午",short:"九龍浦",name:"九龍浦近代文化歷史街區",ko:"구룡포 근대문화역사거리",link:"https://naver.me/x4FKfuT7"},
   {k:"homi",when:"下午",short:"虎尾岬",name:"虎尾岬迎日廣場＋燈塔博物館",ko:"호미곶 해맞이광장 · 국립등대박물관",note:"韓國本土最東端，海上的「相生之手」雕塑。燈塔博物館就在旁邊。",link:"https://naver.me/x8tpRjaU"},
-  {k:"spacew",when:"傍晚",short:"Space Walk",name:"Space Walk 環湖公園",ko:"환호공원 스페이스워크",link:"https://naver.me/GII6cwCi",park:"有停車場"},
+  {k:"spacew",when:"⚠️ 17:00 關門",short:"Space Walk",name:"Space Walk 環湖公園",ko:"환호공원 스페이스워크",link:"https://naver.me/GII6cwCi",park:"有停車場"},
   {k:"hotelPH",when:"晚上",short:"飯店",name:"海鮮大餐 → 入住",ko:"호텔XYM 문덕점",note:"晚餐吃海鮮大餐 🦀"}
  ],stay:{nm:"Pohang Mundeok Hotel XYM",link:"https://naver.me/5Jp97UcU",doc:"h3"}},
 {d:"11/21",w:"六",tab:"八公山",title:"浦項 → 大邱 八公山寺院寄宿",route:"浦項 → 大邱",
@@ -389,7 +394,7 @@ const days=[
 {d:"11/22",w:"日",tab:"大邱",title:"冠岩許願 → 大邱老城",route:"八公山 → 大邱市區",
  callout:"⚠️ 大邱 UH Flat 訂的是「No Parking」房型，飯店不提供停車，要先找好附近的收費停車場。",
  stops:[
-  {k:"donghwa",when:"11:00–11:20",short:"桐華寺",name:"Temple Stay 退房",note:"寺方行程表的退房時間是 11:00–11:20。早上 04:30 早課、07:30 108 拜。",ko:"템플스테이 종료 · 동화사 봉황문",link:"https://naver.me/5p0POzEl",linkText:"桐華寺鳳凰門",doc:"ts"},
+  {k:"donghwa",noinfo:1,when:"11:00–11:20",short:"桐華寺",name:"Temple Stay 退房",note:"寺方行程表的退房時間是 11:00–11:20。早上 04:30 早課、07:30 108 拜。",ko:"템플스테이 종료 · 동화사 봉황문",link:"https://naver.me/5p0POzEl",linkText:"桐華寺鳳凰門",doc:"ts"},
   {k:"gatbawi",when:"中午（可選）",short:"冠岩",name:"八公山冠岩",ko:"팔공산 갓바위",opt:1,note:"有名的靈山許願地，在山的另一側。三條路線：",
    opts:[
     "<b>路線 1 大邱方向</b>（대구 코스）：從관음사上山，到觀音寺後再爬 1365 階到山頂，來回約 2.5 小時。",
@@ -563,14 +568,16 @@ const DOCS=[
   map:"https://map.naver.com/p/search/%EB%B6%80%EC%82%B0%20%EC%82%AC%EC%83%81%EA%B5%AC%20%EA%B4%91%EC%9E%A5%EB%A1%9C81%EB%B2%88%EA%B8%B8%2055"},
  {id:"h2",grp:"住宿",ic:"🏨",t:"Gyeongju Silla Legacy Hotel",sub:"11/18 – 11/20 · 2 晚 · 慶州市中心",imgs:["h2"],kv:[
   ["Agoda","<span class='big'>1776468917</span>"],["參考編號","6138258576（Booking.com）"],["房型","高級套房 · 2 大 2 小"],
-  ["地址","14-1, Wonhyo-ro, Gyeongju 38157"],["含","免費 Wi-Fi、停車位"]],map:"https://naver.me/5T4qhEml"},
+  ["地址","14-1, Wonhyo-ro, Gyeongju 38157"],["電話","054-624-3388"],["含","免費 Wi-Fi、停車位"]],map:"https://naver.me/5T4qhEml"},
  {id:"h3",grp:"住宿",ic:"🏨",t:"Pohang Mundeok Hotel XYM",sub:"11/20 – 11/21 · 1 晚 · 浦項南區",imgs:["h3"],kv:[
   ["Agoda","<span class='big'>1776470724</span>"],["房型","VIP Twin Room · 2 大 2 小"],
-  ["地址","3, Mundeok-ro 37beon-gil, Ocheon-eup, Nam-gu, Pohang 37888"],["含","早餐、咖啡/茶、飲用水、Wi-Fi、迎賓飲料、停車位"]],map:"https://naver.me/5Jp97UcU"},
+  ["地址","3, Mundeok-ro 37beon-gil, Ocheon-eup, Nam-gu, Pohang 37888"],["電話","054-291-2040"],["含","早餐、咖啡/茶、飲用水、Wi-Fi、迎賓飲料、停車位"]],map:"https://naver.me/5Jp97UcU"},
  {id:"ts",grp:"住宿",ic:"🛕",t:"桐華寺 Temple Stay",sub:"11/21 – 11/22 · 1 晚 · 💰 尚未付款",imgs:["ts1","ts2a","ts2b","pg1","pg2","pg3","pg4","pg5","pg6","pg7","pg8","pg9"],pre:`<div class="paybox"><h4>💰 尚未付款・價目表（每人每晚，韓元）</h4>
+<div class="est" style="margin:0 0 6px">夥伴整理的價格（應是你們預約的方案）：<b>大人 110,000・兒童 60,000・學齡前 40,000</b> → 2 大 2 小約 <b class="big2">340,000 韓元</b></div>
+<div class="est" style="margin:0 0 4px;color:var(--ink2)">寺方網頁〈Complete Rest〉方案的價格：</div>
 <table class="price"><tr><th>成人<br>Adult</th><th>青少年<br>Teenager</th><th>兒童<br>Child</th><th>學齡前<br>Pre-School</th></tr>
 <tr><td>100,000</td><td>90,000</td><td>60,000</td><td>40,000</td></tr></table>
-<div class="est">你們 2 大 2 小：<br>・兩個小孩都算兒童 → <b class="big2">320,000 韓元</b><br>・一個算青少年、一個算兒童 → 350,000 韓元<br>・兩個都算青少年 → 380,000 韓元</div>
+<div class="est">照這個價格：<br>・兩個小孩都算兒童 → 320,000 韓元<br>・一個算青少年、一個算兒童 → 350,000 韓元<br>・兩個都算青少年 → 380,000 韓元</div>
 <div class="docwarn" style="margin-top:8px">這份價目表是寺方網頁〈Complete Rest 休息型〉方案的價格；你們預約的是〈Making 108 Prayer Beads〉體驗型方案，實際金額和小孩的年齡分類，建議先 WhatsApp 跟寺方確認。</div>
 <div class="est"><b>付款方式</b>：線上刷卡；或現場付<b>剛好金額的現金</b>（不找零）、實體信用卡／金融卡。現場<b>不能</b>用 Apple Pay、Samsung Pay。</div></div>`,
   warn:"開車去要<b>事先登記車牌</b>（含韓文字，例如 49허4885），當天無法登記。11/18 取車拿到車牌後，就用 WhatsApp 傳給寺方。沒登記的話離開時要刷卡付停車費：前 4 小時 4,000 韓元，之後每小時 1,000 韓元，不收現金。",kv:[
@@ -586,7 +593,7 @@ const DOCS=[
   map:"https://naver.me/5p0POzEl",mapText:"導航：桐華寺鳳凰門"},
  {id:"h4",grp:"住宿",ic:"🏨",t:"UH FLAT SIGNATURE DAEGU",sub:"11/22 – 11/24 · 2 晚 · 大邱東區",imgs:["h4"],warn:"房型是「No Parking」，飯店沒有停車位，要另找附近的收費停車場。",kv:[
   ["Agoda","<span class='big'>1776482486</span>"],["房型","Triple Suite – 6 Pax · 4 大 2 小"],
-  ["地址","6, Dongbu-ro 26-gil, Dong-gu, Daegu 41243"],["電話","+82 10-9781-7413"],["含","免費 Wi-Fi、飲用水"]],map:"https://naver.me/Gn0yOf3g"}
+  ["地址","6, Dongbu-ro 26-gil, Dong-gu, Daegu 41243"],["電話","053-746-2288／+82 10-9781-7413"],["含","免費 Wi-Fi、飲用水"]],map:"https://naver.me/Gn0yOf3g"}
 ];
 const viewer=document.getElementById("viewer");
 function openDoc(id){const d=DOCS.find(x=>x.id===id);if(!d||!d.imgs.length)return;
@@ -1004,10 +1011,10 @@ function renderSOS(){
    <div class="shoothint" style="padding:6px 0">取車時記得問金海機場分店電話和道路救援電話，寫在這裡最保險。</div></div>
   <div class="docgrp">住宿</div><div class="ecard">
    ${telRow("Sorgente Business Hotel","+82 10-7582-2349","11/17・釜山")}
-   <div class="erow2"><div><b>Gyeongju Silla Legacy Hotel</b><small>11/18–11/20・慶州</small></div><div class="enum"><a href="https://naver.me/5T4qhEml" target="_blank" rel="noopener">Naver 查電話</a></div></div>
-   <div class="erow2"><div><b>Pohang Mundeok Hotel XYM</b><small>11/20・浦項</small></div><div class="enum"><a href="https://naver.me/5Jp97UcU" target="_blank" rel="noopener">Naver 查電話</a></div></div>
-   ${telRow("桐華寺 Temple Stay（WhatsApp）","+82 10-4071-3975","11/21・09:00–17:00")}
-   ${telRow("UH FLAT SIGNATURE DAEGU","+82 10-9781-7413","11/22–11/24・大邱")}</div>
+   ${telRow("Gyeongju Silla Legacy Hotel","054-624-3388","11/18–11/20・慶州")}
+   ${telRow("Pohang Mundeok Hotel XYM","054-291-2040","11/20・浦項")}
+   ${telRow("桐華寺 Temple Stay","053-982-0223","11/21・寺院電話")}${telRow("桐華寺 Temple Stay（WhatsApp）","+82 10-4071-3975","09:00–17:00")}
+   ${telRow("UH FLAT SIGNATURE DAEGU","053-746-2288","11/22–11/24・大邱")}${telRow("UH FLAT（手機）","+82 10-9781-7413","訂房單上的號碼")}</div>
   <div class="docgrp">給韓國人看</div>
   <div class="say">
    <div class="sayc"><b>저는 대만 관광객이에요. 한국어를 잘 못해요. 도와주세요.</b><span>我是台灣觀光客，不太會說韓文，請幫幫我。</span></div>
@@ -1072,6 +1079,34 @@ const HW={
 };
 const HWTOT=Object.values(HW).reduce((a,h)=>[a[0]+h.toll[0],a[1]+h.toll[1]],[0,0]);
 function hwChip(i){const h=HW[i+1];if(!h)return"";const t=h.toll[1]?`・過路費約 ₩${h.toll[0].toLocaleString()}–${h.toll[1].toLocaleString()}`:"";return `<div class="hwchip">🛣️ ${h.roads}${t}</div>`}
+
+/* ---------- attraction info (from companion's deck) ---------- */
+const INFO={
+ cave:{h:"09:15–17:00",t:"洞窟＋乘船：大人 ₩14,000／兒童 ₩12,000",d:"用紫水晶礦山的廢坑道改造成的人工洞窟，裡面冬暖夏涼，可以搭小船在地下水道裡探險。"},
+ kart:{h:"10:00–18:00（週一休）",t:"Whale's Cart 單人 ₩24,000／雙人 ₩30,000",d:"長生浦鯨魚文化特區裡的卡丁車。"},
+ whale:{h:"博物館・生態體驗館・文化村 09:00–18:00；單軌電車 10:00–18:00（都是週一休）",t:"Happy Tourist Pass ₩9,100（不含單軌電車）；單軌電車 14 歲以上 ₩11,000／14 歲以下 ₩7,000",d:"長生浦以前是捕鯨港，1986 年禁止捕鯨後，改造成韓國唯一以鯨魚為主題的觀光區，包含鯨魚博物館、生態體驗館、重現捕鯨村的文化村，還有單軌電車。"},
+ daewang:{h:"24 小時（吊橋只到 18:00）",t:"免費",d:"入口到燈塔有約 600 m 的松林步道，海邊是奇形怪狀的巨岩。傳說文武大王的王妃死後化為護國龍，長眠在這裡。園內的吊橋中間沒有支柱，是韓國跨距最長的吊橋。"},
+ bulguk:{h:"11–1 月 09:00–17:00",t:"免費",d:"建於 528 年，有多寶塔、釋迦塔等 6 件國寶，1995 年和石窟庵一起列為世界文化遺產。"},
+ seokgu:{h:"11–1 月 09:00–17:00",t:"免費",d:"新羅時代的石窟寺，中央的白色花崗岩如來坐像面向東海、遙望文武大王水中陵，四周牆上刻有 38 尊佛像。"},
+ daereung:{h:"09:00–22:00",t:"免費；天馬塚 大人 ₩3,000／兒童 ₩1,000",d:"新羅初期的古墳群，像一座座土丘。天馬塚是唯一開放內部參觀的古墳，出土過新羅金冠；皇南大塚是巨大的雙墳。"},
+ cheom:{h:"09:00–22:00",t:"免費",d:"善德女王時期建造，亞洲現存最古老的天文台，27 層石塊象徵第 27 代女王，約 365 塊石頭代表一年。"},
+ wolji:{h:"09:00–22:00",t:"大人 ₩3,000／兒童 ₩1,000",d:"新羅王宮的別宮與太子東宮遺址，舊稱雁鴨池，晚上燈光倒映在池面最漂亮。"},
+ yangdong:{h:"10–3 月 09:00–17:00",t:"大人 ₩4,000／兒童 ₩1,500",d:"韓國最大的同姓村，由月城孫氏和驪江李氏組成，保留約 54 戶朝鮮時代的傳統古宅，是世界文化遺產。"},
+ guryong:{h:"24 小時（近代歷史館週一休）",t:"免費",d:"保留日本殖民時期的日式家屋街，老餐廳「古里家」改成茶店，可以喝茶、體驗浴衣，從公園階梯能俯瞰漁村。"},
+ homi:{h:"廣場 24 小時；國立燈塔博物館 09:00–18:00（週一休）",t:"免費",d:"韓半島最東端、最早看到日出的地方，海上的青銅雕塑「相生之手」是代表景觀。旁邊是韓國唯一的燈塔博物館。"},
+ spacew:{h:"11–3 月 平日 10:00–17:00、週末 10:00–18:00（每月第一個週一休）",t:"免費",d:"長 333 m、717 階的鋼鐵天空步道，造型像雲霄飛車，可以 360 度俯瞰浦項和迎日灣。"},
+ cable:{h:"09:00–18:00",t:"來回 大人 ₩14,000／兒童 ₩8,000",d:"坡度陡、纜線長，坐起來有點刺激。終點在新林峰山頂，是祈福的聖地。"},
+ donghwa:{h:"11/21 13:30 報到 → 11/22 11:20 退房",t:"大人 ₩110,000／兒童 ₩60,000／學齡前 ₩40,000（夥伴整理的價格）",d:"住在傳統寺院體驗修行生活：禮佛、參禪、108 拜，還有寺院飲食。"},
+ gatbawi:{h:"24 小時",t:"免費",d:"山頂的石造如來坐像，頭上有塊像斗笠的天然岩石而得名。傳說誠心祈求可以實現一個願望，考試前特別多人來祈福。"},
+ dalseong:{h:"公園 05:00–21:00；動物園 10:00–17:00",t:"免費",d:"大邱最古老的市區公園，原本是古代的土城，園內有大邱唯一的動物園和觀風樓。"},
+ modern:{h:"依各景點開放時間",t:"免費",d:"大邱市 13 條街區散步路線中最受歡迎的第 2 路線，走過青蘿之丘、3.1 運動路、桂山聖堂、韓醫藥博物館等近代歷史景點。"},
+ dodong:{h:"08:00–20:00",t:"免費",d:"韓國 5 大書院之一，2019 年登錄世界遺產。看點是被指定為寶物的土牆、講堂和 400 年的銀杏樹。"},
+ gachang:{h:"24 小時",t:"免費",d:"1990 年代到 2015 年的採石場，荒廢後坑底積水形成深約 30 m 的翠綠湖泊，配上 40 m 高的峭壁，被稱為韓國的夢蓮湖。"}
+};
+const EXTRA=[
+ ["巨濟 鳴蟬城","매미성","一位居民在 2003 年颱風梅米後，花 18 年用兩萬多塊花崗岩獨自砌成的海邊城堡，像歐洲中世紀城堡。","24 小時","免費","https://map.naver.com/p/search/"+encodeURIComponent("거제 매미성")],
+ ["巨濟 風之丘","바람의 언덕","漁村北邊山坡，海風很大、草都長得很矮，2009 年設置的風車很有異國風情。","24 小時","免費","https://map.naver.com/p/search/"+encodeURIComponent("거제 바람의 언덕")]
+];
 
 /* ---------- WOWPASS machines ---------- */
 const WM=[
@@ -1148,7 +1183,9 @@ function render(id){
   if(id==="all"){
     panel.innerHTML=`<div class="dayhead"><div class="route">TRIP OVERVIEW</div><h2>八天一覽</h2></div>
     <div class="callout blue">✈ 去程 <b>11/17（二）17:05 → 20:35</b> 高雄 → 釜山 7C6256<br>✈ 回程 <b>11/24（二）14:05 → 16:05</b> 釜山 → 高雄 7C6255<br>🚗 11/18 08:00 金海機場取車（樂天租車），加購預付 Hi-pass 卡（₩35,000，內含 ₩30,000 餘額）<br>🛣️ 高速公路過路費全程估計約 ₩${HWTOT[0].toLocaleString()}–${HWTOT[1].toLocaleString()}（≈ NT$${Math.round(HWTOT[0]*RATE)}–${Math.round(HWTOT[1]*RATE)}），₩30,000 餘額應該夠用<br><a href="#docs" style="font-weight:700;color:var(--persimmon)">📁 所有訂位資料 →</a></div>
+    <div class="callout" style="margin-top:8px">👥 <b>同行夥伴航班</b>：11/18 濟州航空 7C6164 02:50 → 06:10 抵達釜山；11/24 7C6163 22:00 起飛</div>
     <div class="ov">${days.map((d,i)=>`<div class="ovd" data-i="${i}"><span class="dot" style="background:${DAYCOL[i]}"></span><span class="d">${d.d}<br><small style="font-weight:400;font-size:11px">(${d.w})</small></span><span class="t">${d.title}<small>${d.stops.filter(s=>!s.fly).slice(0,4).map(s=>s.name).join("・")||d.route}</small></span></div>`).join("")}</div>`;
+    panel.insertAdjacentHTML("beforeend",`<div class="docgrp" style="margin-top:20px">備選景點・巨濟</div>${EXTRA.map(x=>`<div class="wm"><div class="wmh"><b>${x[0]}</b><em>${x[1]}</em></div><div class="wmd">${x[2]}</div><div class="wmd">🕘 ${x[3]}・🎟️ ${x[4]}</div><a class="btn g" href="${x[5]}" target="_blank" rel="noopener">Naver 地圖</a></div>`).join("")}`);
     panel.querySelectorAll(".ovd").forEach(e=>e.onclick=()=>{location.hash="day"+(+e.dataset.i+1)});
     legend.innerHTML="<b>全程路線</b>・每天一個顏色";
     animateRoute(days.map((d,i)=>seqFor(i)),{overview:true});
@@ -1168,6 +1205,7 @@ function render(id){
       ${s.note?`<div class="note">${s.note}</div>`:""}
       ${s.slots?`<div class="note">${s.k==="donghwa"?"寺內行程：":"發車時間："}</div><div class="slots">${s.slots.map(x=>`<span>${x}</span>`).join("")}</div>`:""}
       ${s.opts?`<div class="opts">${s.opts.map(o=>`<div class="opt">${o}</div>`).join("")}</div>`:""}
+      ${(()=>{const I=INFO[s.k];if(!I||s.noinfo)return"";return `<div class="info"><div>🕘 ${I.h}</div><div>🎟️ ${I.t}</div><details><summary>景點介紹</summary><p>${I.d}</p></details></div>`})()}
       ${chips.length?`<div class="chips">${chips.join("")}</div>`:""}
     </div></li>`}).join("");
   panel.innerHTML=`<div class="dayhead"><div class="route">DAY ${i+1} · ${d.d}（${d.w}）· ${d.route}</div><h2>${d.title}</h2>${(()=>{const t=dayDrive(d);return t.min?`<span class="drivesum">🚗 今天開車約 ${t.km} km・${fmtMin(t.min)}（估算）</span>`:""})()}${hwChip(i)}</div>

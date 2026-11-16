@@ -277,6 +277,11 @@ footer{color:var(--ink2);font-size:12px;text-align:center;padding:10px 16px 30px
 .leg{position:relative;padding:0 0 12px 44px;font-size:12.5px;color:var(--ink2)}
 .leg span{background:var(--paper2);border-radius:10px;padding:3px 9px}
 .drivesum{display:inline-block;margin-top:6px;font-size:12.5px;background:var(--ink);color:#fff;border-radius:12px;padding:3px 10px}
+.signs{display:grid;gap:6px;margin-top:8px}
+.sg{display:flex;align-items:center;gap:12px;background:#fffaf0;border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.sg svg{flex:0 0 auto}
+.sg b{display:block;font-size:17px}
+.sg span{font-size:13px;color:var(--ink2)}
 </style>
 </head>
 <body>
@@ -892,6 +897,27 @@ function renderWeather(){
   document.getElementById("wxRe").onclick=()=>{WX={};renderWeather()};
 }
 
+const SIGN={
+ jucha:`<rect x="4" y="4" width="56" height="56" rx="6" fill="#1d4fa3"/><text x="32" y="46" font-size="40" font-weight="900" fill="#fff" text-anchor="middle" font-family="Arial">P</text>`,
+ exit:`<rect x="2" y="12" width="60" height="40" rx="5" fill="#1f7a3a"/><text x="32" y="31" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">출구</text><text x="32" y="46" font-size="11" font-weight="700" fill="#fff" text-anchor="middle" font-family="Arial">EXIT</text>`,
+ oneway:`<rect x="2" y="16" width="60" height="32" rx="3" fill="#1d4fa3"/><path d="M10 32h34" stroke="#fff" stroke-width="5"/><path d="M42 23l12 9-12 9z" fill="#fff"/><text x="28" y="56" font-size="0">.</text>`,
+ noentry:`<circle cx="32" cy="32" r="28" fill="#d0202a"/><rect x="12" y="27" width="40" height="10" fill="#fff"/>`,
+ slow:`<path d="M4 8h56L32 58z" fill="#fff" stroke="#d0202a" stroke-width="5" stroke-linejoin="round"/><text x="32" y="30" font-size="13" font-weight="900" fill="#222" text-anchor="middle">서행</text>`,
+ uturn:`<circle cx="32" cy="32" r="28" fill="#1d4fa3"/><path d="M40 48V26a8 8 0 0 0-16 0v10" fill="none" stroke="#fff" stroke-width="5"/><path d="M16 34l8 10 8-10z" fill="#fff"/>`,
+ rest:`<rect x="4" y="8" width="56" height="48" rx="5" fill="#1f7a3a"/><path d="M22 18v28M18 18v8a4 4 0 0 0 8 0v-8M42 18c-5 0-6 8-6 12s2 4 4 4v12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`,
+ toll:`<rect x="2" y="14" width="60" height="36" rx="5" fill="#1f7a3a"/><text x="32" y="37" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">톨게이트</text>`,
+ jam:`<rect x="2" y="16" width="60" height="32" rx="3" fill="#222"/><text x="32" y="38" font-size="15" font-weight="700" fill="#ffa21f" text-anchor="middle">정체</text>`,
+ work:`<path d="M32 5l28 50H4z" fill="#ffd21f" stroke="#d0202a" stroke-width="5" stroke-linejoin="round"/><circle cx="30" cy="25" r="4" fill="#222"/><path d="M30 29l-3 12 8 4M27 34l-7 5M33 33l8-2" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M38 47h12" stroke="#222" stroke-width="3"/>`,
+ nopark:`<circle cx="32" cy="32" r="27" fill="#1d4fa3" stroke="#d0202a" stroke-width="6"/><path d="M14 14l36 36M50 14L14 50" stroke="#d0202a" stroke-width="6"/>`,
+ tow:`<rect x="2" y="14" width="60" height="36" rx="3" fill="#fff" stroke="#d0202a" stroke-width="3"/><text x="32" y="37" font-size="12" font-weight="900" fill="#d0202a" text-anchor="middle">견인지역</text>`,
+ stop:`<path d="M4 8h56L32 58z" fill="#d0202a" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><text x="32" y="25" font-size="11" font-weight="900" fill="#fff" text-anchor="middle">정지</text><text x="32" y="34" font-size="6.5" font-weight="700" fill="#fff" text-anchor="middle" font-family="Arial">STOP</text>`,
+ school:`<path d="M32 5l28 50H4z" fill="#ffd21f" stroke="#d0202a" stroke-width="5" stroke-linejoin="round"/><circle cx="26" cy="24" r="4" fill="#222"/><circle cx="39" cy="27" r="3.5" fill="#222"/><path d="M26 28v14M39 31v11M20 34h12M34 36h10" stroke="#222" stroke-width="3" stroke-linecap="round"/>`,
+ unprot:`<rect x="4" y="14" width="56" height="36" rx="4" fill="#1d4fa3"/><text x="32" y="37" font-size="13" font-weight="900" fill="#fff" text-anchor="middle">비보호</text>`,
+ bus:`<rect x="2" y="14" width="60" height="36" rx="4" fill="#1d4fa3"/><text x="32" y="30" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">버스전용</text><text x="32" y="43" font-size="9" fill="#fff" text-anchor="middle">07:00~21:00</text>`,
+ hipass:`<rect x="2" y="14" width="60" height="36" rx="5" fill="#1d4fa3"/><text x="32" y="37" font-size="11" font-weight="900" fill="#fff" text-anchor="middle" font-family="Arial">hi-pass</text>`
+};
+const sv=k=>`<svg viewBox="0 0 64 64" width="52" height="52" aria-hidden="true">${SIGN[k]}</svg>`;
+
 /* ---------- driving guide ---------- */
 function renderDrive(){
   const rules=[
@@ -906,7 +932,7 @@ function renderDrive(){
    ["💳","Hi-pass 車道","收費站地上有藍線的是 Hi-pass 車道，車上有 Hi-pass 卡才能走。取車時問清楚車上有沒有。","하이패스 = 電子收費"],
    ["🚨","發生事故","先停車、開警示燈、放三角牌，人受傷要叫救護車並報警，不可以直接離開。撥 112 報警、119 救護；1330 是觀光熱線，可以幫忙翻譯。","112 경찰・119 구급"]
   ];
-  const words=[["주차장","停車場"],["출구 / 입구","出口／入口"],["일방통행","單行道"],["진입금지","禁止進入"],["서행","慢行"],["유턴","迴轉（只能在有標誌的地方）"],["휴게소","高速公路休息站"],["톨게이트","收費站"],["정체","塞車"],["공사중","施工中"],["주정차금지","禁止停車"],["견인지역","拖吊區"]];
+  const words=[["정지","停車再開（停車標誌）","stop"],["진입금지","禁止進入","noentry"],["일방통행","單行道","oneway"],["서행","慢行","slow"],["유턴","可以迴轉（只能在這個標誌處）","uturn"],["비보호","無保護左轉：綠燈時自行判斷左轉","unprot"],["어린이보호구역","兒童保護區・限速 30","school"],["공사중","前方施工","work"],["주정차금지","禁止臨停和停車","nopark"],["견인지역","拖吊區","tow"],["주차장","停車場","jucha"],["버스전용차로","公車專用道，時段內不能開","bus"],["하이패스","Hi-pass 電子收費車道","hipass"],["톨게이트","收費站","toll"],["출구 / 입구","出口／入口","exit"],["휴게소","高速公路休息站","rest"],["정체","塞車（電子看板）","jam"]];
   const fuelWords=[["주유소","加油站"],["셀프","自助"],["휘발유 / 가솔린","汽油"],["경유 / 디젤","柴油"],["고급휘발유","高級汽油"],["유종","油種"],["가득","加滿"],["금액 / 리터","金額／公升"],["신용카드 / 현금","信用卡／現金"],["결제","付款"],["승인","授權（預扣）"],["영수증","收據"],["주유기 번호","加油機號碼"],["노즐","油槍"],["정전기 방지 패드","防靜電貼片"]];
   const steps=[
    ["先確認油種","取車時就問清楚是汽油還是柴油（Carnival 兩種都有），油箱蓋上通常也有標示。<b>加錯油很麻煩</b>，不確定就去有人服務的加油站。"],
@@ -933,7 +959,7 @@ function renderDrive(){
       <ol class="fsteps">${steps.map(s=>`<li><b>${s[0]}</b><p>${s[1]}</p></li>`).join("")}</ol>
       <div class="docgrp">加油站韓文</div><div class="wtab">${fuelWords.map(w=>`<div><b>${w[0]}</b><span>${w[1]}</span></div>`).join("")}</div>
       <div class="docgrp">有人服務的加油站：直接給店員看</div><div class="say">${say.map(s=>`<div class="sayc"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("")}</div>`;
-    if(v==="words")body.innerHTML=`<div class="wtab">${words.map(w=>`<div><b>${w[0]}</b><span>${w[1]}</span></div>`).join("")}</div>`;
+    if(v==="words")body.innerHTML=`<div class="signs">${words.map(w=>`<div class="sg">${sv(w[2])}<div><b>${w[0]}</b><span>${w[1]}</span></div></div>`).join("")}</div><div class="shoothint" style="margin-top:8px">圖示是依韓國路標樣式畫的示意圖，實際標誌的細節可能不同。</div>`;
   };
   document.getElementById("dTab").onclick=e=>{const b=e.target.closest("button");if(!b)return;document.querySelectorAll("#dTab button").forEach(x=>x.classList.toggle("on",x===b));show(b.dataset.v)};
   show("rules");

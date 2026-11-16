@@ -342,7 +342,7 @@ const P={
   cable:[35.9890,128.6930], donghwa:[35.9880,128.6980], gatbawi:[35.9720,128.7300],
   dalseong:[35.8740,128.5770], modern:[35.8670,128.5870], hotelDG:[35.8775,128.6305],
   dodong:[35.7270,128.4430], keimyung:[35.8560,128.4880], sauna:[35.8530,128.5100], apsan:[35.8250,128.5750],
-  gachang:[35.7800,128.6300]
+  gachang:[35.7800,128.6300], maemi:[34.9920,128.6770], baram:[34.7405,128.6635]
 };
 const N=u=>u; // naver link
 const days=[
@@ -415,13 +415,17 @@ const days=[
   {k:"apsan",when:"晚上",name:"前山日落觀景台",ko:"앞산해넘이전망대",link:"https://naver.me/5XJOga8d",park:"有停車場"},
   {k:"hotelDG",when:"晚上",short:"飯店",name:"回飯店",ko:"UH 플랫 시그니처 대구"}
  ],stay:{nm:"UH FLAT SIGNATURE DAEGU",link:"https://naver.me/Gn0yOf3g",doc:"h4"}},
-{d:"11/24",w:"二",tab:"回家",title:"大邱 → 金海 ✈ 高雄",route:"大邱 → PUS → KHH",
- callout:"⚠️ 回程是 <b>14:05</b> 起飛，不是 14:30。租車單上的還車時間卻寫 <b>11/24 19:30</b>，比航班還晚，要請樂天租車改成中午前還車。<br>12:05 前要到機場，約 11:30 還車，大邱開過去 1 小時多，<b>大約 10:00 就要從大邱出發</b>；嘉昌要很早去，或考慮刪掉。",
+{d:"11/24",w:"二",tab:"回家",title:"大邱 → 金海 ✈ 高雄・夥伴遊巨濟",route:"大邱 → PUS ✈ KHH｜夥伴 → 巨濟 → PUS",
+ callout:"我們 <b>14:05</b> 起飛，12:05 前要到機場，<b>大約 10:00 就要從大邱出發</b>；嘉昌要很早去，或考慮刪掉。<br>送我們到機場後，另外兩位夥伴開車去巨濟，<b>19:30 前</b>回金海機場還車，22:00 搭 7C6163。<br>⚠️ 去巨濟要走<b>巨加大路（巨加大橋）</b>，小型車單程 ₩10,000、來回 ₩20,000。加上當天大邱釜山高速，Hi-pass 預付卡的 ₩30,000 會不夠，出發前先到便利商店或休息站加值。",
  stops:[
   {k:"hotelDG",when:"上午",short:"飯店",name:"Check out",ko:"체크아웃"},
   {k:"gachang",when:"上午",short:"嘉昌",name:"嘉昌三山池・嘉昌採石場",ko:"가창 삼산지 · 가창채석장",link:"https://naver.me/x8kZFIMT",links:[["採石場","https://naver.me/FyASbot9"]]},
-  {k:"PUS",when:"約 11:30",short:"金海機場",name:"金海機場 樂天租車還車",ko:"롯데렌터카 김해공항",note:"租車單寫 19:30，要先跟樂天確認提早還車。",doc:"car"},
-  {k:"KHH",fly:1,when:"14:05 起飛",short:"高雄",name:"釜山 → 高雄 7C6255",ko:"濟州航空 · 16:05 抵達高雄",note:"託運行李基本 15 kg。回家囉！",doc:"flight"}
+  {k:"PUS",when:"約 11:30–12:00",short:"金海機場",name:"送我們到金海機場",ko:"김해국제공항 국제선",note:"我們全家在機場下車，車子交給夥伴。"},
+  {k:"PUS",fly:1,noinfo:1,when:"14:05 起飛",short:"✈ 我們回高雄",name:"釜山 → 高雄 7C6255",ko:"濟州航空 · 16:05 抵達高雄",note:"託運行李基本 15 kg。回家囉！",doc:"flight"},
+  {k:"maemi",when:"夥伴・下午",short:"鳴蟬城",name:"巨濟 鳴蟬城",ko:"거제 매미성",link:"https://map.naver.com/p/search/"+encodeURIComponent("거제 매미성")},
+  {k:"baram",when:"夥伴・下午",short:"風之丘",name:"巨濟 風之丘",ko:"거제 바람의 언덕",link:"https://map.naver.com/p/search/"+encodeURIComponent("거제 바람의 언덕")},
+  {k:"PUS",when:"夥伴・19:30 前",short:"還車",name:"金海機場 樂天租車還車",ko:"롯데렌터카 김해공항",note:"還車前記得加油、拍車況照片、把 Hi-pass 卡交回。",doc:"car"},
+  {k:"PUS",fly:1,when:"夥伴・22:00 起飛",short:"✈ 夥伴",name:"夥伴搭 7C6163",ko:"濟州航空 · 23:50 抵達"}
  ],stay:null}
 ];
 
@@ -439,13 +443,16 @@ function base(){
   const g=el("g",{opacity:.35});
   for(let i=0;i<18;i++){const y=80+i*75;el("path",{d:`M ${900+((i*37)%120)} ${y} q 12 -8 24 0 t 24 0`,fill:"none",stroke:"#8fb3b8","stroke-width":3},g)}
   el("path",{d:"M"+land.map(pr).map(p=>p.join(",")).join("L")+"Z",fill:"#f3ead8",stroke:"#b9a888","stroke-width":2.5});
+  const gj=[[35.03,128.60],[35.0,128.72],[34.93,128.745],[34.85,128.72],[34.77,128.70],[34.71,128.66],[34.74,128.57],[34.82,128.51],[34.89,128.46],[34.96,128.50],[35.01,128.55]];
+  el("path",{d:"M"+gj.map(pr).map(p=>p.join(",")).join("L")+"Z",fill:"#f3ead8",stroke:"#b9a888","stroke-width":2.5});
+  el("path",{d:"M"+[[35.06,128.83],[35.02,128.72]].map(pr).map(p=>p.join(",")).join("L"),stroke:"#b9a888","stroke-width":3,"stroke-dasharray":"8 6",fill:"none"});
   // Nakdong river
   const riv=[[36.32,128.42],[36.1,128.40],[35.95,128.41],[35.8,128.46],[35.65,128.42],[35.52,128.45],[35.42,128.6],[35.38,128.75],[35.3,128.86],[35.2,128.93],[35.07,128.95]].map(pr);
   el("path",{d:"M"+riv.map(p=>p.join(",")).join("L"),fill:"none",stroke:"#a9c6cb","stroke-width":7,"stroke-linejoin":"round","stroke-linecap":"round"});
   const t=(x,y,s,c,cls,extra={})=>{const e=el("text",Object.assign({x,y,"font-size":s,class:cls},extra));e.textContent=c;return e};
   const cityG=el("g",{id:"cities"});const L=(ll,txt,s=46)=>{const[x,y]=pr(ll);const e=t(x,y,s,txt,"lab",{"text-anchor":"middle"});cityG.appendChild(e)};
   L([35.93,128.56],"大邱");L([35.88,129.17],"慶州");L([36.12,129.30],"浦項");L([35.585,129.27],"蔚山");L([35.14,129.05],"釜山",40);L([35.28,128.84],"金海",34);
-  L([36.03,128.70],"八公山",26);L([35.6,128.5],"洛東江",24);
+  L([36.03,128.70],"八公山",26);L([35.6,128.5],"洛東江",24);L([34.86,128.62],"巨濟",34);
   t(1060,560,40,"東海","sealab",{"writing-mode":"tb","text-anchor":"middle"});
   t(520,1310,34,"南海","sealab",{"text-anchor":"middle"});
   // compass
@@ -555,9 +562,9 @@ const DOCS=[
   ["去程","<span class='big'>7C6256</span><br>11/17（二）17:05 高雄 KHH → 20:35 釜山 PUS"],
   ["回程","<span class='big'>7C6255</span><br>11/24（二）<b>14:05</b> 釜山 PUS → 16:05 高雄 KHH"],
   ["航廈","兩地都是國際航廈"],["行李","託運基本 15 kg（每人）"]]},
- {id:"car",grp:"租車",ic:"🚗",t:"樂天租車 LOTTE rent-a-car",sub:"Carnival 七人座 · 金海機場取還",imgs:["car"],warn:"還車時間寫 11/24 19:30，但回程航班 14:05 起飛，請聯絡樂天改成中午前還車。",kv:[
+ {id:"car",grp:"租車",ic:"🚗",t:"樂天租車 LOTTE rent-a-car",sub:"Carnival 七人座 · 金海機場取還",imgs:["car"],kv:[
   ["預約編號","<span class='big'>2622652043</span>"],["車型","Minivan CARNIVAL"],["金額","1,022,740 KRW（已付款）"],
-  ["取車","<b>11/18（三）08:00</b> 金海機場"],["還車","11/24（二）19:30 金海機場 ⚠️"],
+  ["取車","<b>11/18（三）08:00</b> 金海機場"],["還車","11/24（二）19:30 金海機場（夥伴還車）"],
   ["地址","2027-2 Daejeo 2-dong, Gangseo-gu, Busan"],["營業","08:00–21:00"],
   ["要帶","護照、國際駕照 IDP、信用卡或簽帳卡（不收現金）"],
   ["Hi-pass","預付卡：₩35,000（卡費 ₩5,000＋餘額 ₩30,000），還卡不退剩餘餘額；不夠可在便利商店或休息站加值"]]},
@@ -1075,7 +1082,7 @@ const HW={
  5:{roads:"浦項→八公山：大邱浦項高速（益山浦項高速）",toll:[3500,4500]},
  6:{roads:"八公山、大邱市區，大概不會上高速",toll:[0,0]},
  7:{roads:"往返道東書院：導航可能帶你走中部內陸高速支線（往玄風）",toll:[0,4000]},
- 8:{roads:"大邱→金海：大邱釜山高速（民營，比較貴）",toll:[10000,12000]}
+ 8:{roads:"大邱→金海：大邱釜山高速（民營）；夥伴往返巨濟：巨加大路，小型車單程 ₩10,000",toll:[30000,32000]}
 };
 const HWTOT=Object.values(HW).reduce((a,h)=>[a[0]+h.toll[0],a[1]+h.toll[1]],[0,0]);
 function hwChip(i){const h=HW[i+1];if(!h)return"";const t=h.toll[1]?`・過路費約 ₩${h.toll[0].toLocaleString()}–${h.toll[1].toLocaleString()}`:"";return `<div class="hwchip">🛣️ ${h.roads}${t}</div>`}
@@ -1101,6 +1108,8 @@ const INFO={
  dalseong:{h:"公園 05:00–21:00；動物園 10:00–17:00",t:"免費",d:"大邱最古老的市區公園，原本是古代的土城，園內有大邱唯一的動物園和觀風樓。"},
  modern:{h:"依各景點開放時間",t:"免費",d:"大邱市 13 條街區散步路線中最受歡迎的第 2 路線，走過青蘿之丘、3.1 運動路、桂山聖堂、韓醫藥博物館等近代歷史景點。"},
  dodong:{h:"08:00–20:00",t:"免費",d:"韓國 5 大書院之一，2019 年登錄世界遺產。看點是被指定為寶物的土牆、講堂和 400 年的銀杏樹。"},
+ maemi:{h:"24 小時",t:"免費",d:"一位居民在 2003 年颱風梅米之後，花了 18 年、用兩萬多塊花崗岩獨自砌成的海邊城堡，很像歐洲中世紀的城堡。"},
+ baram:{h:"24 小時",t:"免費",d:"漁村北邊的山坡，海風很大，草都長得很矮，2009 年設置的風車很有異國風情。"},
  gachang:{h:"24 小時",t:"免費",d:"1990 年代到 2015 年的採石場，荒廢後坑底積水形成深約 30 m 的翠綠湖泊，配上 40 m 高的峭壁，被稱為韓國的夢蓮湖。"}
 };
 const EXTRA=[
@@ -1182,10 +1191,9 @@ function render(id){
   if(id==="docs"){docsPanel();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="all"){
     panel.innerHTML=`<div class="dayhead"><div class="route">TRIP OVERVIEW</div><h2>八天一覽</h2></div>
-    <div class="callout blue">✈ 去程 <b>11/17（二）17:05 → 20:35</b> 高雄 → 釜山 7C6256<br>✈ 回程 <b>11/24（二）14:05 → 16:05</b> 釜山 → 高雄 7C6255<br>🚗 11/18 08:00 金海機場取車（樂天租車），加購預付 Hi-pass 卡（₩35,000，內含 ₩30,000 餘額）<br>🛣️ 高速公路過路費全程估計約 ₩${HWTOT[0].toLocaleString()}–${HWTOT[1].toLocaleString()}（≈ NT$${Math.round(HWTOT[0]*RATE)}–${Math.round(HWTOT[1]*RATE)}），₩30,000 餘額應該夠用<br><a href="#docs" style="font-weight:700;color:var(--persimmon)">📁 所有訂位資料 →</a></div>
+    <div class="callout blue">✈ 去程 <b>11/17（二）17:05 → 20:35</b> 高雄 → 釜山 7C6256<br>✈ 回程 <b>11/24（二）14:05 → 16:05</b> 釜山 → 高雄 7C6255<br>🚗 11/18 08:00 金海機場取車（樂天租車），加購預付 Hi-pass 卡（₩35,000，內含 ₩30,000 餘額）<br>🛣️ 高速公路過路費全程估計約 ₩${HWTOT[0].toLocaleString()}–${HWTOT[1].toLocaleString()}（≈ NT$${Math.round(HWTOT[0]*RATE)}–${Math.round(HWTOT[1]*RATE)}），${HWTOT[1]>30000?"<b>超過預付卡的 ₩30,000，11/24 前要加值</b>":"₩30,000 餘額應該夠用"}<br><a href="#docs" style="font-weight:700;color:var(--persimmon)">📁 所有訂位資料 →</a></div>
     <div class="callout" style="margin-top:8px">👥 <b>同行夥伴航班</b>：11/18 濟州航空 7C6164 02:50 → 06:10 抵達釜山；11/24 7C6163 22:00 起飛</div>
     <div class="ov">${days.map((d,i)=>`<div class="ovd" data-i="${i}"><span class="dot" style="background:${DAYCOL[i]}"></span><span class="d">${d.d}<br><small style="font-weight:400;font-size:11px">(${d.w})</small></span><span class="t">${d.title}<small>${d.stops.filter(s=>!s.fly).slice(0,4).map(s=>s.name).join("・")||d.route}</small></span></div>`).join("")}</div>`;
-    panel.insertAdjacentHTML("beforeend",`<div class="docgrp" style="margin-top:20px">備選景點・巨濟</div>${EXTRA.map(x=>`<div class="wm"><div class="wmh"><b>${x[0]}</b><em>${x[1]}</em></div><div class="wmd">${x[2]}</div><div class="wmd">🕘 ${x[3]}・🎟️ ${x[4]}</div><a class="btn g" href="${x[5]}" target="_blank" rel="noopener">Naver 地圖</a></div>`).join("")}`);
     panel.querySelectorAll(".ovd").forEach(e=>e.onclick=()=>{location.hash="day"+(+e.dataset.i+1)});
     legend.innerHTML="<b>全程路線</b>・每天一個顏色";
     animateRoute(days.map((d,i)=>seqFor(i)),{overview:true});

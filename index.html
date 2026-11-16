@@ -301,6 +301,7 @@ footer{color:var(--ink2);font-size:12px;text-align:center;padding:10px 16px 30px
 .pen{display:block;font-style:normal;font-size:12.5px;color:#6b6157;margin-top:1px}
 .sayc .pen{color:#cfc4b3}
 .pce{margin-top:10px;font-size:22px;color:#2f6f8f;font-weight:700}
+.hwchip{margin-top:6px;font-size:12.5px;line-height:1.5;background:#e3eef2;color:#1f4f63;border-radius:10px;padding:5px 10px}
 </style>
 </head>
 <body>
@@ -1057,6 +1058,20 @@ const EN={"메뉴판 주세요":"Menu, please.","이거 주세요":"I'd like thi
 "저는 대만 관광객이에요. 한국어를 잘 못해요. 도와주세요.":"I'm a tourist from Taiwan. I don't speak Korean well. Please help me.","사고가 났어요. 경찰을 불러 주세요.":"There's been an accident. Please call the police.","아이가 아파요. 가까운 병원이 어디예요?":"My child is sick. Where is the nearest hospital?","1330에 전화해 주실 수 있어요?":"Could you call 1330 (tourist helpline) for me?",
 "휘발유 오만 원어치 넣어 주세요":"50,000 won of gasoline, please.","경유 가득 넣어 주세요":"Fill it up with diesel, please.","카드로 결제할게요":"I'll pay by card.","영수증 주세요":"Receipt, please.","이 차 휘발유예요, 경유예요?":"Does this car take gasoline or diesel?","외국 카드가 안 돼요. 도와주세요":"My foreign card isn't working. Please help."};
 
+/* ---------- expressway & toll estimates ---------- */
+const HW={
+ 1:{roads:"大概不會上高速（機場到沙上走市區道路）",toll:[0,0]},
+ 2:{roads:"金海→蔚山：釜山外環／京釜高速；蔚山→慶州：可能走蔚山浦項高速或國道",toll:[4000,7000]},
+ 3:{roads:"慶州市區，不會上高速",toll:[0,0]},
+ 4:{roads:"多半走海邊國道，不太會上高速",toll:[0,2000]},
+ 5:{roads:"浦項→八公山：大邱浦項高速（益山浦項高速）",toll:[3500,4500]},
+ 6:{roads:"八公山、大邱市區，大概不會上高速",toll:[0,0]},
+ 7:{roads:"往返道東書院：導航可能帶你走中部內陸高速支線（往玄風）",toll:[0,4000]},
+ 8:{roads:"大邱→金海：大邱釜山高速（民營，比較貴）",toll:[10000,12000]}
+};
+const HWTOT=Object.values(HW).reduce((a,h)=>[a[0]+h.toll[0],a[1]+h.toll[1]],[0,0]);
+function hwChip(i){const h=HW[i+1];if(!h)return"";const t=h.toll[1]?`・過路費約 ₩${h.toll[0].toLocaleString()}–${h.toll[1].toLocaleString()}`:"";return `<div class="hwchip">🛣️ ${h.roads}${t}</div>`}
+
 /* ---------- WOWPASS machines ---------- */
 const WM=[
  ["daegu","大邱",[
@@ -1131,7 +1146,7 @@ function render(id){
   if(id==="docs"){docsPanel();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="all"){
     panel.innerHTML=`<div class="dayhead"><div class="route">TRIP OVERVIEW</div><h2>八天一覽</h2></div>
-    <div class="callout blue">✈ 去程 <b>11/17（二）17:05 → 20:35</b> 高雄 → 釜山 7C6256<br>✈ 回程 <b>11/24（二）14:05 → 16:05</b> 釜山 → 高雄 7C6255<br>🚗 11/18 08:00 金海機場取車（樂天租車）<br><a href="#docs" style="font-weight:700;color:var(--persimmon)">📁 所有訂位資料 →</a></div>
+    <div class="callout blue">✈ 去程 <b>11/17（二）17:05 → 20:35</b> 高雄 → 釜山 7C6256<br>✈ 回程 <b>11/24（二）14:05 → 16:05</b> 釜山 → 高雄 7C6255<br>🚗 11/18 08:00 金海機場取車（樂天租車），有租 Hi-pass 卡<br>🛣️ 高速公路過路費全程估計約 ₩${HWTOT[0].toLocaleString()}–${HWTOT[1].toLocaleString()}（≈ NT$${Math.round(HWTOT[0]*RATE)}–${Math.round(HWTOT[1]*RATE)}），用 Hi-pass 扣<br><a href="#docs" style="font-weight:700;color:var(--persimmon)">📁 所有訂位資料 →</a></div>
     <div class="ov">${days.map((d,i)=>`<div class="ovd" data-i="${i}"><span class="dot" style="background:${DAYCOL[i]}"></span><span class="d">${d.d}<br><small style="font-weight:400;font-size:11px">(${d.w})</small></span><span class="t">${d.title}<small>${d.stops.filter(s=>!s.fly).slice(0,4).map(s=>s.name).join("・")||d.route}</small></span></div>`).join("")}</div>`;
     panel.querySelectorAll(".ovd").forEach(e=>e.onclick=()=>{location.hash="day"+(+e.dataset.i+1)});
     legend.innerHTML="<b>全程路線</b>・每天一個顏色";
@@ -1154,7 +1169,7 @@ function render(id){
       ${s.opts?`<div class="opts">${s.opts.map(o=>`<div class="opt">${o}</div>`).join("")}</div>`:""}
       ${chips.length?`<div class="chips">${chips.join("")}</div>`:""}
     </div></li>`}).join("");
-  panel.innerHTML=`<div class="dayhead"><div class="route">DAY ${i+1} · ${d.d}（${d.w}）· ${d.route}</div><h2>${d.title}</h2>${(()=>{const t=dayDrive(d);return t.min?`<span class="drivesum">🚗 今天開車約 ${t.km} km・${fmtMin(t.min)}（估算）</span>`:""})()}</div>
+  panel.innerHTML=`<div class="dayhead"><div class="route">DAY ${i+1} · ${d.d}（${d.w}）· ${d.route}</div><h2>${d.title}</h2>${(()=>{const t=dayDrive(d);return t.min?`<span class="drivesum">🚗 今天開車約 ${t.km} km・${fmtMin(t.min)}（估算）</span>`:""})()}${hwChip(i)}</div>
     ${d.callout?`<div class="callout">${d.callout}</div>`:""}
     <ol class="stops">${stops}</ol>
     ${d.stay?`<div class="stay"><div><div class="lbl">今晚住宿</div><div class="nm">${d.stay.nm}</div></div><span style="margin-left:auto;display:flex;gap:6px">${d.stay.doc?`<button class="chip doc-l" data-open="${d.stay.doc}" style="background:#fff;color:var(--ink)">📄 訂房單</button>`:""}${d.stay.link?`<a href="${d.stay.link}" target="_blank" rel="noopener" style="margin-left:0">Naver</a>`:""}</span></div>`:""}`;

@@ -554,7 +554,8 @@ const DOCS=[
   ["預約編號","<span class='big'>2622652043</span>"],["車型","Minivan CARNIVAL"],["金額","1,022,740 KRW（已付款）"],
   ["取車","<b>11/18（三）08:00</b> 金海機場"],["還車","11/24（二）19:30 金海機場 ⚠️"],
   ["地址","2027-2 Daejeo 2-dong, Gangseo-gu, Busan"],["營業","08:00–21:00"],
-  ["要帶","護照、國際駕照 IDP、信用卡或簽帳卡（不收現金）"]]},
+  ["要帶","護照、國際駕照 IDP、信用卡或簽帳卡（不收現金）"],
+  ["Hi-pass","預付卡：₩35,000（卡費 ₩5,000＋餘額 ₩30,000），還卡不退剩餘餘額；不夠可在便利商店或休息站加值"]]},
  {id:"h1",grp:"住宿",ic:"🏨",t:"Sorgente Business Hotel",sub:"11/17 – 11/18 · 1 晚 · 釜山沙上區",imgs:["h1"],kv:[
   ["Agoda","<span class='big'>1776465559</span>"],["房型","Kids Spa Room · 2 大 2 小"],
   ["地址","55, Gwangjang-ro 81beon-gil, Sasang-gu, Busan<br>광장로81번길 55, 사상구, 부산"],
@@ -1146,7 +1147,7 @@ function render(id){
   if(id==="docs"){docsPanel();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="all"){
     panel.innerHTML=`<div class="dayhead"><div class="route">TRIP OVERVIEW</div><h2>八天一覽</h2></div>
-    <div class="callout blue">✈ 去程 <b>11/17（二）17:05 → 20:35</b> 高雄 → 釜山 7C6256<br>✈ 回程 <b>11/24（二）14:05 → 16:05</b> 釜山 → 高雄 7C6255<br>🚗 11/18 08:00 金海機場取車（樂天租車），有租 Hi-pass 卡<br>🛣️ 高速公路過路費全程估計約 ₩${HWTOT[0].toLocaleString()}–${HWTOT[1].toLocaleString()}（≈ NT$${Math.round(HWTOT[0]*RATE)}–${Math.round(HWTOT[1]*RATE)}），用 Hi-pass 扣<br><a href="#docs" style="font-weight:700;color:var(--persimmon)">📁 所有訂位資料 →</a></div>
+    <div class="callout blue">✈ 去程 <b>11/17（二）17:05 → 20:35</b> 高雄 → 釜山 7C6256<br>✈ 回程 <b>11/24（二）14:05 → 16:05</b> 釜山 → 高雄 7C6255<br>🚗 11/18 08:00 金海機場取車（樂天租車），加購預付 Hi-pass 卡（₩35,000，內含 ₩30,000 餘額）<br>🛣️ 高速公路過路費全程估計約 ₩${HWTOT[0].toLocaleString()}–${HWTOT[1].toLocaleString()}（≈ NT$${Math.round(HWTOT[0]*RATE)}–${Math.round(HWTOT[1]*RATE)}），₩30,000 餘額應該夠用<br><a href="#docs" style="font-weight:700;color:var(--persimmon)">📁 所有訂位資料 →</a></div>
     <div class="ov">${days.map((d,i)=>`<div class="ovd" data-i="${i}"><span class="dot" style="background:${DAYCOL[i]}"></span><span class="d">${d.d}<br><small style="font-weight:400;font-size:11px">(${d.w})</small></span><span class="t">${d.title}<small>${d.stops.filter(s=>!s.fly).slice(0,4).map(s=>s.name).join("・")||d.route}</small></span></div>`).join("")}</div>`;
     panel.querySelectorAll(".ovd").forEach(e=>e.onclick=()=>{location.hash="day"+(+e.dataset.i+1)});
     legend.innerHTML="<b>全程路線</b>・每天一個顏色";

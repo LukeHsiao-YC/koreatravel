@@ -282,6 +282,25 @@ footer{color:var(--ink2);font-size:12px;text-align:center;padding:10px 16px 30px
 .sg svg{flex:0 0 auto}
 .sg b{display:block;font-size:17px}
 .sg span{font-size:13px;color:var(--ink2)}
+.wml{display:grid;gap:8px;margin-top:10px}
+.wm{background:#fffaf0;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.wmh b{font-size:15.5px}
+.wmh em{font-style:normal;font-size:11.5px;background:#e3f1e6;color:#245b33;border-radius:10px;padding:2px 8px;margin-left:6px;white-space:nowrap}
+.wmd{font-size:13px;color:#3d3630;margin-top:3px;line-height:1.5}
+.wmd.ko{color:var(--ink2)}
+.wm .btn{display:inline-block;margin-top:8px;font-size:12.5px;padding:5px 12px}
+.ph,.sayc{cursor:pointer}
+.ph:active,.sayc:active{transform:scale(.98)}
+#pcard{position:fixed;inset:0;z-index:150;background:#fffaf0;display:none;align-items:center;justify-content:center;padding:24px}
+#pcard.on{display:flex}
+.pcin{width:100%;max-width:900px;text-align:center}
+.pck{font-weight:900;line-height:1.3;color:var(--ink);word-break:keep-all;overflow-wrap:anywhere}
+.pcz{margin-top:24px;font-size:20px;color:var(--persimmon);font-weight:700}
+.pcb{display:flex;gap:10px;justify-content:center;margin-top:36px}
+.pcb .btn{font-size:16px;padding:11px 20px}
+.pen{display:block;font-style:normal;font-size:12.5px;color:#6b6157;margin-top:1px}
+.sayc .pen{color:#cfc4b3}
+.pce{margin-top:10px;font-size:22px;color:#2f6f8f;font-weight:700}
 </style>
 </head>
 <body>
@@ -958,7 +977,7 @@ function renderDrive(){
     if(v==="fuel")body.innerHTML=`<div class="docgrp">自助加油步驟（셀프 주유）</div>
       <ol class="fsteps">${steps.map(s=>`<li><b>${s[0]}</b><p>${s[1]}</p></li>`).join("")}</ol>
       <div class="docgrp">加油站韓文</div><div class="wtab">${fuelWords.map(w=>`<div><b>${w[0]}</b><span>${w[1]}</span></div>`).join("")}</div>
-      <div class="docgrp">有人服務的加油站：直接給店員看</div><div class="say">${say.map(s=>`<div class="sayc"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("")}</div>`;
+      <div class="docgrp">有人服務的加油站：直接給店員看</div><div class="say">${say.map(s=>`<div class="sayc"><b>${s[0]}</b><span>${s[1]}</span>${EN[s[0]]?`<i class="pen">${EN[s[0]]}</i>`:""}</div>`).join("")}</div>`;
     if(v==="words")body.innerHTML=`<div class="signs">${words.map(w=>`<div class="sg">${sv(w[2])}<div><b>${w[0]}</b><span>${w[1]}</span></div></div>`).join("")}</div><div class="shoothint" style="margin-top:8px">圖示是依韓國路標樣式畫的示意圖，實際標誌的細節可能不同。</div>`;
   };
   document.getElementById("dTab").onclick=e=>{const b=e.target.closest("button");if(!b)return;document.querySelectorAll("#dTab button").forEach(x=>x.classList.toggle("on",x===b));show(b.dataset.v)};
@@ -994,6 +1013,7 @@ function renderSOS(){
    <div class="sayc"><b>아이가 아파요. 가까운 병원이 어디예요?</b><span>小孩生病了，最近的醫院在哪裡？</span></div>
    <div class="sayc"><b>1330에 전화해 주실 수 있어요?</b><span>可以幫我打 1330（觀光翻譯熱線）嗎？</span></div>
   </div>`;
+  panel.querySelectorAll(".sayc").forEach(c=>{const k=c.querySelector("b").textContent;if(EN[k]&&!c.querySelector(".pen"))c.insertAdjacentHTML("beforeend",`<i class="pen">${EN[k]}</i>`)});
 }
 /* ---------- phrases ---------- */
 const PHR=[
@@ -1018,8 +1038,8 @@ async function speakKo(text,btn){
 }
 function renderPhr(){
   panel.innerHTML=`<div class="dayhead"><div class="route">KOREAN PHRASES</div><h2>🗣️ 韓文常用句</h2></div>
-  <div class="callout">${SPEAK_ON?"按 🔊 會念出來；講不出口就直接把螢幕給對方看。":"直接把螢幕給對方看，或照下面的拼音唸。"}</div>
-  ${PHR.map(([g,list])=>`<div class="docgrp">${g}</div><div class="phl">${list.map(p=>`<div class="ph"><div class="pht"><b>${p[0]}</b><small>${p[1]}</small><span>${p[2]}</span></div>${SPEAK_ON?`<button class="spk" data-say="${p[0].replace(/"/g,"&quot;")}">🔊</button>`:""}</div>`).join("")}</div>`).join("")}`;
+  <div class="callout">點一句會放大成全螢幕，直接給對方看。${SPEAK_ON?"按 🔊 可以念出來。":""}</div>
+  ${PHR.map(([g,list])=>`<div class="docgrp">${g}</div><div class="phl">${list.map(p=>`<div class="ph"><div class="pht"><b>${p[0]}</b><small>${p[1]}</small><span>${p[2]}</span>${EN[p[0]]?`<i class="pen">${EN[p[0]]}</i>`:""}</div>${SPEAK_ON?`<button class="spk" data-say="${p[0].replace(/"/g,"&quot;")}">🔊</button>`:""}</div>`).join("")}</div>`).join("")}`;
   panel.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speakKo(b.dataset.say,b));
 }
 /* ---------- drive time estimates ---------- */
@@ -1028,9 +1048,68 @@ function legEst(a,b){if(a==="donghwa"&&b==="gatbawi")return{km:0,min:0,note:"要
 function dayDrive(d){let km=0,min=0;d.stops.forEach((s,i)=>{if(!i)return;const p=d.stops[i-1];if(s.fly||(p.fly&&p.k==="KHH"))return;const e=legEst(p.k,s.k);if(e){km+=e.km;min+=e.min}});return{km,min}}
 const fmtMin=m=>m>=60?`${Math.floor(m/60)} 小時${m%60?" "+m%60+" 分":""}`:`${m} 分`;
 
+const EN={"메뉴판 주세요":"Menu, please.","이거 주세요":"I'd like this one, please.","어른 두 명, 아이 두 명이에요":"Two adults and two children.","안 맵게 해 주세요":"Not spicy, please.","아이도 먹을 수 있어요?":"Is this OK for children to eat?","물 좀 주세요":"Some water, please.","앞접시 주세요":"Small plates, please.","포장해 주세요":"To go, please.","계산해 주세요":"Check, please.","따로 계산할게요":"We'll pay separately.","카드 돼요?":"Do you take cards?","맛있어요!":"It's delicious!",
+"체크인하려고요":"I'd like to check in.","예약했어요. 이름은 Hsiao예요":"I have a reservation under Hsiao.","짐 맡겨도 돼요?":"Can I leave my luggage here?","주차장 어디예요?":"Where is the parking lot?","와이파이 비밀번호가 뭐예요?":"What's the Wi-Fi password?","체크아웃할게요":"I'd like to check out.",
+"여기 주차해도 돼요?":"Can I park here?","주차비 얼마예요?":"How much is parking?","여기 어떻게 가요?":"How do I get here?","화장실 어디예요?":"Where is the restroom?","가득 넣어 주세요":"Fill it up, please.",
+"얼마예요?":"How much is it?","이거 있어요?":"Do you have this?","택스 리펀 돼요?":"Can I get a tax refund?","봉투 주세요":"A bag, please.","좀 깎아 주세요":"Could you give me a discount?",
+"도와주세요!":"Help me, please!","아이가 아파요":"My child is sick.","열이 나요":"(They) have a fever.","약국 어디예요?":"Where is a pharmacy?","병원에 가야 해요":"We need to go to a hospital.","경찰 불러 주세요":"Please call the police.",
+"안녕하세요":"Hello.","감사합니다":"Thank you.","죄송합니다":"I'm sorry.","괜찮아요":"It's OK. / No, thank you.","네 / 아니요":"Yes / No","대만에서 왔어요":"We're from Taiwan.",
+"저는 대만 관광객이에요. 한국어를 잘 못해요. 도와주세요.":"I'm a tourist from Taiwan. I don't speak Korean well. Please help me.","사고가 났어요. 경찰을 불러 주세요.":"There's been an accident. Please call the police.","아이가 아파요. 가까운 병원이 어디예요?":"My child is sick. Where is the nearest hospital?","1330에 전화해 주실 수 있어요?":"Could you call 1330 (tourist helpline) for me?",
+"휘발유 오만 원어치 넣어 주세요":"50,000 won of gasoline, please.","경유 가득 넣어 주세요":"Fill it up with diesel, please.","카드로 결제할게요":"I'll pay by card.","영수증 주세요":"Receipt, please.","이 차 휘발유예요, 경유예요?":"Does this car take gasoline or diesel?","외국 카드가 안 돼요. 도와주세요":"My foreign card isn't working. Please help."};
+
+/* ---------- WOWPASS machines ---------- */
+const WM=[
+ ["daegu","大邱",[
+  ["OLIVE YOUNG 東大邱店","東大邱站 2 號出口約 170 m，1 樓店內","대구 동구 동부로 140","10:00–22:00","離 UH Flat 飯店最近"],
+  ["OLIVE YOUNG 大邱 Town 店","半月堂站 10 號出口約 370 m，1 樓店內","대구 중구 동성로5길 33","10:30–22:30","東城路商圈"],
+  ["東橫 INN 大邱東城路","半月堂站 13 號出口約 220 m，7 樓櫃台","토요코인 대구동성로","24 小時",""]]],
+ ["gyeongju","慶州",[
+  ["新羅 Boutique Hotel Premium","慶州高速巴士站約 400 m，1 樓櫃台","경주 신라부티크호텔 프리미엄","06:00–05:40","離 Silla Legacy 飯店較近"],
+  ["CU 慶州皇理團路店","慶州高速巴士站約 700 m，CU 便利商店內","경북 경주시 포석로 1091-2","24 小時","皇理團路，大陵苑旁"],
+  ["慶州市觀光弱者案內中心","慶州高速巴士站約 870 m","경북 경주시 태종로 767","09:00–18:00",""],
+  ["慶州站觀光服務中心","KTX 慶州站 1 樓、1 號出口附近","경북 경주시 건천읍 경주역로 80","09:00–18:00","在市區外，較遠"],
+  ["Kolon Hotel 慶州","普門湖一帶，大廳樓層","경주 코오롱호텔","24 小時","離普門湖無人車較近"]]],
+ ["ulsan","蔚山",[
+  ["樂天城市酒店 蔚山","蔚山高速巴士站約 1.1 km，1 樓櫃台","롯데시티호텔 울산","06:00–24:00",""],
+  ["新羅 Stay 蔚山","太和江站約 3 km，1 樓大廳","신라스테이 울산","24 小時",""],
+  ["蔚山港 船員福祉中心","蔚山港第 6 碼頭，1 樓","울산 남구 매암로 96","09:00–22:00","離長生浦鯨魚村最近"]]],
+ ["busan","釜山西面",[
+  ["樂天百貨 釜山本店","西面站 7 號出口約 130 m，1 樓後門退稅處附近","부산 부산진구 가야대로 772","10:30–20:00","也有賣韓元現鈔"],
+  ["樂天飯店 釜山","西面站 7 號出口約 300 m，1 樓西側 ATM 旁","롯데호텔 부산","24 小時",""],
+  ["emart24 釜山西面站店","西面站 7 號出口約 7 m，便利商店內","부산 부산진구 서면로 74","06:00–05:40",""],
+  ["OLIVE YOUNG 西面 Town 店","西面站 2 號出口約 150 m，1 樓店內","부산 부산진구 중앙대로 704-1","10:00–23:00",""]]]
+];
+function nvMap(q){return "https://map.naver.com/p/search/"+encodeURIComponent(q)}
+let wmCity="daegu";
+function renderWM(){
+  const c=WM.find(x=>x[0]===wmCity);
+  panel.innerHTML=`<div class="dayhead"><div class="route">WOWPASS MACHINES</div><h2>🏧 WOWPASS 機台</h2></div>
+  <div class="callout">⚠️ <b>金海機場目前沒有 WOWPASS 機台</b>，浦項也查不到。蔚山、慶州、大邱都有幾台，經過時先儲值。<br>機台可以直接放<b>台幣現鈔</b>儲值，也能把餘額領成韓元現金。</div>
+  <div class="seg wrap" id="wmSeg" style="margin-top:12px">${WM.map(x=>`<button class="${x[0]===wmCity?"on":""}" data-v="${x[0]}">${x[1]}</button>`).join("")}</div>
+  <div class="wml">${c[2].map(m=>`<div class="wm"><div class="wmh"><b>${m[0]}</b>${m[4]?`<em>${m[4]}</em>`:""}</div><div class="wmd">📍 ${m[1]}</div><div class="wmd">🕘 ${m[3]}</div><div class="wmd ko">${m[2]}</div><a class="btn g" href="${nvMap(m[2])}" target="_blank" rel="noopener">Naver 地圖</a></div>`).join("")}</div>
+  <div class="shoothint" style="margin-top:10px">這份清單整理自網路上的非官方資料，機台可能搬走或暫停。出發前用 WOWPASS App 的「Map」確認最新位置和營業時間。</div>`;
+  document.getElementById("wmSeg").onclick=e=>{const b=e.target.closest("button");if(!b)return;wmCity=b.dataset.v;renderWM()};
+}
+/* ---------- full-screen phrase card ---------- */
+function showCard(ko,zh){const en=EN[ko]||"";
+  let o=document.getElementById("pcard");
+  if(!o){o=document.createElement("div");o.id="pcard";document.body.appendChild(o)}
+  o.innerHTML=`<div class="pcin"><div class="pck">${ko}</div><div class="pcz">${zh}</div>${en?`<div class="pce">${en}</div>`:""}
+   <div class="pcb">${SPEAK_ON?`<button class="btn" id="pcSay">🔊 念出來</button>`:""}<button class="btn ghost" id="pcX">✕ 關閉</button></div></div>`;
+  o.classList.add("on");document.body.style.overflow="hidden";
+  const fit=()=>{const k=o.querySelector(".pck");let fs=Math.min(96,Math.max(34,Math.floor(innerWidth/Math.max(4,ko.replace(/\s/g,"").length*0.62))));k.style.fontSize=fs+"px";};fit();
+  document.getElementById("pcX").onclick=()=>{o.classList.remove("on");document.body.style.overflow=""};
+  const s=document.getElementById("pcSay");if(s)s.onclick=()=>speakKo(ko,s);
+}
+document.addEventListener("click",e=>{
+  if(e.target.closest(".spk,a,button.cp"))return;
+  const p=e.target.closest(".ph");if(p){const b=p.querySelector(".pht b"),z=p.querySelector(".pht span");showCard(b.textContent,z.textContent);return}
+  const s=e.target.closest(".sayc");if(s){showCard(s.querySelector("b").textContent,s.querySelector("span").textContent)}
+});
+
 /* ---------- UI ---------- */
 const tabs=document.getElementById("tabs"),panel=document.getElementById("panel"),legend=document.getElementById("legend");
-const tabList=[{id:"all",b:"全覽",s:"8 天"},{id:"docs",b:"📁",s:"訂位"},{id:"calc",b:"🧮",s:"換算"},{id:"weather",b:"🌤️",s:"天氣"},{id:"drive",b:"🚗",s:"自駕"},{id:"talk",b:"🗣️",s:"韓文"},{id:"sos",b:"🆘",s:"緊急"}].concat(days.map((d,i)=>({id:"day"+(i+1),b:d.d,s:d.tab})));
+const tabList=[{id:"all",b:"全覽",s:"8 天"},{id:"docs",b:"📁",s:"訂位"},{id:"calc",b:"🧮",s:"換算"},{id:"weather",b:"🌤️",s:"天氣"},{id:"drive",b:"🚗",s:"自駕"},{id:"talk",b:"🗣️",s:"韓文"},{id:"wowm",b:"🏧",s:"WOW機台"},{id:"sos",b:"🆘",s:"緊急"}].concat(days.map((d,i)=>({id:"day"+(i+1),b:d.d,s:d.tab})));
 tabList.forEach(t=>{const b=document.createElement("button");b.className="tab";b.dataset.id=t.id;b.innerHTML=`<b>${t.b}</b><span>${t.s}</span>`;b.onclick=()=>{location.hash=t.id};tabs.appendChild(b)});
 
 function seqFor(i){const d=days[i];return{pts:d.stops.map(s=>pr(P[s.k])),stops:d.stops,color:DAYCOL[i]}}
@@ -1039,10 +1118,11 @@ function render(id){
   current=id;
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.id===id));
   const on=document.querySelector(".tab.on");on&&on.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"});
-  const noMap=["docs","money","calc","weather","drive","talk","sos"].includes(id);
+  const noMap=["docs","money","calc","weather","drive","talk","sos","wowm"].includes(id);
   document.querySelector(".mapwrap").style.display=noMap?"none":"";
   if(noMap){token.dead=true}
   if(id==="money"){renderMoney();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
+  if(id==="wowm"){renderWM();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="talk"){renderPhr();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="sos"){renderSOS();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="drive"){renderDrive();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}

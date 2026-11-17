@@ -306,6 +306,16 @@ footer{color:var(--ink2);font-size:12px;text-align:center;padding:10px 16px 30px
 .info details{margin-top:3px}
 .info summary{cursor:pointer;color:var(--pine);font-weight:700}
 .info p{margin-top:4px;font-size:13px}
+.rail{margin-top:12px;background:#f4eefa;border:1px solid #d9c8ea;border-radius:14px;padding:12px}
+.railh{font-weight:700;font-size:15px;color:#5b2f86}
+.railnote{font-size:13px;line-height:1.65;margin-top:8px;color:#3d3630}
+.rprice{margin-top:8px}
+.rprice td{font-weight:500}
+.rprice td:first-child{text-align:left;padding-left:8px}
+.hbg{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:12px}
+.hbp{margin:0;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:zoom-in;position:relative}
+.hbp img{display:block;width:100%;aspect-ratio:419/595;object-fit:cover;background:var(--paper2)}
+.hbp figcaption{position:absolute;right:6px;bottom:6px;background:rgba(43,38,34,.8);color:#fff;font-size:11px;border-radius:8px;padding:1px 7px}
 </style>
 </head>
 <body>
@@ -351,7 +361,7 @@ const days=[
  stops:[
   {k:"KHH",fly:1,when:"17:05 起飛",short:"高雄",name:"高雄 → 釜山 7C6256",ko:"濟州航空 Jeju Air · 國際航廈",note:"託運行李基本 15 kg。",doc:"flight"},
   {k:"PUS",fly:1,when:"20:35 抵達",short:"金海機場",name:"釜山金海國際機場",ko:"김해국제공항",note:"入境後前往沙上區的飯店。"},
-  {k:"hotelBS",when:"21:00–22:00",short:"飯店",name:"入住 Sorgente Business Hotel",ko:"소르젠떼 비지니스 호텔 · 사상구",doc:"h1"}
+  {k:"hotelBS",when:"21:00–22:00",short:"飯店",name:"入住 Sorgente Business Hotel",note:"搭機場輕軌到沙上站，詳細看上面的輕軌說明。",ko:"소르젠떼 비지니스 호텔 · 사상구",doc:"h1"}
  ],stay:{nm:"Sorgente Business Hotel（沙上區）",doc:"h1"}},
 {d:"11/18",w:"三",tab:"蔚山",title:"金海取車 → 蔚山 → 慶州",route:"金海 → 蔚山 → 慶州",
  stops:[
@@ -623,7 +633,7 @@ function docsPanel(){
 }
 document.addEventListener("click",e=>{
   const o=e.target.closest("[data-open]");if(o){e.stopPropagation();openDoc(o.dataset.open);return}
-  const c=e.target.closest(".cp");if(c){e.stopPropagation();const t=c.dataset.c;
+  const c=e.target.closest(".cp:not(.hbb)");if(c){e.stopPropagation();const t=c.dataset.c;
     try{navigator.clipboard.writeText(t).then(()=>{c.textContent="已複製 ✓";setTimeout(()=>c.textContent="複製",1500)},()=>{c.textContent=t})}catch(_){c.textContent=t}}
 },true);
 
@@ -1117,6 +1127,52 @@ const EXTRA=[
  ["巨濟 風之丘","바람의 언덕","漁村北邊山坡，海風很大、草都長得很矮，2009 年設置的風車很有異國風情。","24 小時","免費","https://map.naver.com/p/search/"+encodeURIComponent("거제 바람의 언덕")]
 ];
 
+const HB_DL=true;
+/* ---------- airport light rail (day 1) ---------- */
+function railBlock(){
+  const st=[["공항","機場站","Airport"],["서부산유통지구","西釜山流通地區",""],["괘법르네시떼","掛法 Renecite",""],["사상","沙上站","Sasang"]];
+  const W=340,x0=30,x1=310,y=46;
+  const svg=`<svg viewBox="0 0 ${W} 120" width="100%" style="max-width:520px;display:block;margin:6px auto 0">
+   <line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="#8a4fbf" stroke-width="8" stroke-linecap="round"/>
+   ${st.map((s,i)=>{const x=x0+(x1-x0)*i/(st.length-1),end=i===0||i===st.length-1;
+     return `<circle cx="${x}" cy="${y}" r="${end?11:7}" fill="#fff" stroke="#8a4fbf" stroke-width="${end?5:4}"/>
+     <text x="${x}" y="${y-20}" font-size="11.5" font-weight="700" text-anchor="middle" fill="#2b2622">${s[0]}</text>
+     <text x="${x}" y="${y+28}" font-size="11" text-anchor="middle" fill="#6b6157">${s[1]}</text>
+     ${s[2]?`<text x="${x}" y="${y+43}" font-size="10" text-anchor="middle" fill="#8a4fbf" font-weight="700">${s[2]}</text>`:""}`}).join("")}
+   <text x="${x1}" y="${y+62}" font-size="10" text-anchor="middle" fill="#3f6b55">轉 2 號線・走去飯店</text>
+   <text x="${x0}" y="${y+62}" font-size="10" text-anchor="middle" fill="#3f6b55">✈ 上車</text>
+  </svg>`;
+  return `<div class="rail"><div class="railh">🚆 機場 → 飯店：搭釜山金海輕軌（부산김해경전철）</div>
+   ${svg}
+   <div class="railnote">往<b>사상（沙上）</b>方向，坐 3 站、約 9 分鐘到終點沙上站。機場到沙上在 10 km 內，算第 1 區間。</div>
+   <table class="price rprice"><tr><th>身分</th><th>交通卡</th><th>單程票</th></tr>
+    <tr><td>大人（19 歲以上）</td><td>₩1,600</td><td>₩1,700</td></tr>
+    <tr><td>青少年（13–18 歲）</td><td>₩1,000</td><td>₩1,100</td></tr>
+    <tr><td>兒童（6–12 歲）</td><td>韓國兒童卡免費</td><td>₩750</td></tr>
+    <tr><td>5 歲以下</td><td colspan="2">大人陪同免費</td></tr></table>
+   <div class="railnote">👨‍👩‍👧‍👦 你們家（大人 2 位＋兒童 1 位，5 歲以下免費）用單程票約 <b>₩4,150</b>。<br>
+   ・觀光客在便利商店買的 T-money 是大人卡，小孩請在售票機買<b>兒童單程票（어린이）</b>。<br>
+   ・WOWPASS 也能當交通卡，但交通餘額只能用韓元現金儲值。<br>
+   ・行李多又累的話，計程車到沙上也很近，可以直接把飯店地址給司機看。</div>
+   <div class="chips"><a class="chip nv" href="https://map.naver.com/p/search/${encodeURIComponent("부산 사상구 광장로81번길 55")}" target="_blank" rel="noopener">飯店地址 Naver 地圖</a></div></div>`;
+}
+/* ---------- companion's handbook ---------- */
+const HB_N=22;
+function renderHB(){
+  panel.innerHTML=`<div class="dayhead"><div class="route">TRAVEL HANDBOOK</div><h2>📘 夥伴的旅行手冊</h2></div>
+  <div class="callout">同行夥伴製作的「2026 慶尚旅行手冊」，共 ${HB_N} 頁。點一頁可以放大看。${HB_DL?`<br><a href="handbook/2026慶尚旅行手冊.pptx" style="font-weight:700;color:var(--persimmon)">⬇ 下載原始 PowerPoint 檔</a>`:""}<br><small style="color:var(--ink2)">由 PowerPoint 轉成圖片，字型和排版可能跟原檔略有不同。</small></div>
+  <div class="hbg">${Array.from({length:HB_N},(_,i)=>{const n=String(i+1).padStart(2,"0");return `<figure class="hbp" data-hb="${i}"><img loading="lazy" src="handbook/s-${n}.jpg" alt="第 ${i+1} 頁"><figcaption>${i+1}</figcaption></figure>`}).join("")}</div>`;
+  panel.querySelectorAll(".hbp").forEach(f=>f.onclick=()=>openHB(+f.dataset.hb));
+}
+function openHB(i){
+  const n=String(i+1).padStart(2,"0");
+  document.getElementById("vtitle").innerHTML=`手冊 ${i+1} / ${HB_N} <span style="display:inline-flex;gap:6px;margin-left:8px"><button class="cp hbb" id="hbPrev" ${i?"":"disabled"}>‹ 上一頁</button><button class="cp hbb" id="hbNext" ${i<HB_N-1?"":"disabled"}>下一頁 ›</button></span>`;
+  document.getElementById("vbody").innerHTML=`<img src="handbook/s-${n}.jpg" style="max-width:min(100%,640px)">`;
+  viewer.classList.add("on");document.body.style.overflow="hidden";
+  document.getElementById("hbPrev").onclick=e=>{e.stopPropagation();if(i>0)openHB(i-1)};
+  document.getElementById("hbNext").onclick=e=>{e.stopPropagation();if(i<HB_N-1)openHB(i+1)};
+}
+
 /* ---------- WOWPASS machines ---------- */
 const WM=[
  ["daegu","大邱",[
@@ -1169,7 +1225,7 @@ document.addEventListener("click",e=>{
 
 /* ---------- UI ---------- */
 const tabs=document.getElementById("tabs"),panel=document.getElementById("panel"),legend=document.getElementById("legend");
-const tabList=[{id:"all",b:"全覽",s:"8 天"},{id:"docs",b:"📁",s:"訂位"},{id:"calc",b:"🧮",s:"換算"},{id:"weather",b:"🌤️",s:"天氣"},{id:"drive",b:"🚗",s:"自駕"},{id:"talk",b:"🗣️",s:"韓文"},{id:"wowm",b:"🏧",s:"WOW機台"},{id:"sos",b:"🆘",s:"緊急"}].concat(days.map((d,i)=>({id:"day"+(i+1),b:d.d,s:d.tab})));
+const tabList=[{id:"all",b:"全覽",s:"8 天"},{id:"hb",b:"📘",s:"手冊"},{id:"docs",b:"📁",s:"訂位"},{id:"calc",b:"🧮",s:"換算"},{id:"weather",b:"🌤️",s:"天氣"},{id:"drive",b:"🚗",s:"自駕"},{id:"talk",b:"🗣️",s:"韓文"},{id:"wowm",b:"🏧",s:"WOW機台"},{id:"sos",b:"🆘",s:"緊急"}].concat(days.map((d,i)=>({id:"day"+(i+1),b:d.d,s:d.tab})));
 tabList.forEach(t=>{const b=document.createElement("button");b.className="tab";b.dataset.id=t.id;b.innerHTML=`<b>${t.b}</b><span>${t.s}</span>`;b.onclick=()=>{location.hash=t.id};tabs.appendChild(b)});
 
 function seqFor(i){const d=days[i];return{pts:d.stops.map(s=>pr(P[s.k])),stops:d.stops,color:DAYCOL[i]}}
@@ -1178,10 +1234,11 @@ function render(id){
   current=id;
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.id===id));
   const on=document.querySelector(".tab.on");on&&on.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"});
-  const noMap=["docs","money","calc","weather","drive","talk","sos","wowm"].includes(id);
+  const noMap=["hb","docs","money","calc","weather","drive","talk","sos","wowm"].includes(id);
   document.querySelector(".mapwrap").style.display=noMap?"none":"";
   if(noMap){token.dead=true}
   if(id==="money"){renderMoney();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
+  if(id==="hb"){renderHB();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="wowm"){renderWM();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="talk"){renderPhr();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
   if(id==="sos"){renderSOS();window.scrollTo({top:document.querySelector(".tabs").offsetTop});return}
@@ -1218,6 +1275,7 @@ function render(id){
     </div></li>`}).join("");
   panel.innerHTML=`<div class="dayhead"><div class="route">DAY ${i+1} · ${d.d}（${d.w}）· ${d.route}</div><h2>${d.title}</h2>${(()=>{const t=dayDrive(d);return t.min?`<span class="drivesum">🚗 今天開車約 ${t.km} km・${fmtMin(t.min)}（估算）</span>`:""})()}${hwChip(i)}</div>
     ${d.callout?`<div class="callout">${d.callout}</div>`:""}
+    ${i===0?railBlock():""}
     <ol class="stops">${stops}</ol>
     ${d.stay?`<div class="stay"><div><div class="lbl">今晚住宿</div><div class="nm">${d.stay.nm}</div></div><span style="margin-left:auto;display:flex;gap:6px">${d.stay.doc?`<button class="chip doc-l" data-open="${d.stay.doc}" style="background:#fff;color:var(--ink)">📄 訂房單</button>`:""}${d.stay.link?`<a href="${d.stay.link}" target="_blank" rel="noopener" style="margin-left:0">Naver</a>`:""}</span></div>`:""}`;
   panel.querySelectorAll(".stop").forEach(e=>e.onclick=ev=>{
